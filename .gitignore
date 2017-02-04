@@ -1,0 +1,8 @@
+.DS_modules
+.DS_Store
+*.css.map
+*.pyc
+.idea
+.python-version
+__pycache__
+db.sqlite3

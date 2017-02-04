@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传图片</title>
+</head>
+<body>
+<form action="/article/upload" method="post" enctype="multipart/form-data">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <input type="submit" value="上传">
+</form>
+</body>
+</html>

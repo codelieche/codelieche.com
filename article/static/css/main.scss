@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+$logoColor: #4A90E2;
+$bodyBackgroundColor: #eee;
+
+@import "normalize.css";
+
+//引入_base.scss
+@import "scss/article/_base.scss";
+
+//引入左边导航的样式
+@import "scss/article/_sidebar-left.scss";
+
+//引入右边 侧边栏的样式
+@import "scss/article/_sidebar.scss";
+@import "scss/article/_article-content.scss";
+
+body {
+    background-color: $bodyBackgroundColor;
+    font-size: 14px;
+    color: #555;
+    font-size: 14px;
+    font-family: "PingFang SC","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","微软雅黑","华文细黑",sans-serif;
+    //font: 14px/1.5 pingfang,”Microsoft Yahei”,\\5B8B\4F53,”Hiragino Sans GB”,sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1320px;
+    position: relative;
+}
+
+//引入 main区域，content和sidebar的布局
+@import "scss/article/_main-content-sidebar.scss";
+
+//引入列表页中 .main .content .articles的样式
+@import "scss/article/_list-content.scss";
+
+//引入文章页中 .main .content .article的样式
+@import "scss/article/_article-content.scss";
+
+//引入文章底部样式
+@import "scss/article/_footer.scss";

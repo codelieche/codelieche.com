@@ -1,0 +1,14 @@
+
+<!--最新文章-->
+<div class="panel">
+    <div class="header">最新文章</div>
+    <div class="inner">
+        <ul class="article-list">
+            {% for post in latest_posts %}
+                <li>
+                    <a href="/article/{{ post.pk }}">{{ post.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

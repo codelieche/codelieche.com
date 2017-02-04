@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* 这里只设置侧边栏里面的样式，宽度，需要在_main-content-sidebar.scss中设置 */
+.container {
+  .main {
+    .sidebar {
+      //width: 300px; 在_main-content-sidebar.scss中设置宽度
+
+      right: 0;
+      .panel {
+        width: 300px;
+        background-color: #fff;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.5);
+        border-radius: 5px;
+        -webit-border-radius: 5px;
+        .header {
+          color: #51585c;
+          border-radius: 5px 5px 0 0;
+          padding: 10px 10px 10px 0px;
+          font-size: 18px;
+          margin-left: 20px;
+          border-bottom: solid 1px #9B9B9B;
+        }
+        .inner {
+          background-color: #fff;
+          padding: 10px;
+
+          .tags {
+            padding-left: 10px;
+            li {
+              display: inline-block;
+              margin: 5px 6px 5px 0;
+              .tag {
+                display: inline-block;
+                padding: 4px 10px;
+                border: 1px solid #d9d9d9;
+                border-radius: 12px;
+                line-height: 1.3;
+                &:hover {
+                  background-color: #d4d4d4;
+                }
+              }
+            }
+          }/* 文章标签样式结束*/
+          .article-list {
+            padding-bottom: 10px;
+            li {
+              margin-left: 10px;
+              padding-left: 0;
+              a {
+                //padding: 5px 0;
+                display: block;
+                font-size: 15px;
+                line-height: 30px;
+                border-bottom: solid 1px #eeeeee;
+                text-overflow: ellipsis;
+                -webkit-line-clamp: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                height: 30px;
+                width: 270px;
+                &:hover {
+                  color: $logoColor;
+                }
+              }
+            }
+          } // 右边文章列表的样式结束
+        }// 面板inner样式结束
+      }//面板样式结束
+    }// sidebar样式结束
+  }// main样式结束
+
+}
+

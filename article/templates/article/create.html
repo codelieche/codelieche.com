@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+{% load self_tags %}
+<head>
+    <meta charset="UTF-8">
+    <title>创建文章-编程列车</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/editor/css/style.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/editor/css/editormd.min.css' %}">
+    <script type="text/javascript" src="{% static 'libs/editor/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/editor/js/editormd.min.js' %}"></script>
+</head>
+<body>
+
+<div class="upload">
+    <div class="content">
+        <form action="/article/upload" method="post" enctype="multipart/form-data">
+            <p>
+                <label for="id_filename">上传图片:</label>
+                <input id="id_filename" name="filename" type="file" required="">
+            </p>
+            {% csrf_token %}
+            <div class="buttons">
+                <input type="reset" value="取消" id="btn_upload_cancel" class="btn">
+                <input type="submit" value="上传" id="btn_upload" class="btn">
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container">
+
+    <div class="content" style="">
+        <div class="message fl"></div>
+        <form action="/article/create" method="post" id="article">
+            {% csrf_token %}
+            <p>
+                <label for="id_category">文章分类: </label>
+                <select name="category" id="id_category">
+                    <option value="">请选择</option>
+                    {% for category in categories %}
+                        <option value="{{ category.pk }}"
+                             {% if category.pk == post.category %}
+                                selected="selected"
+                             {% endif %}
+                        >
+                            {{ category.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% get_now as n %}
+                <label for="id_created">日期</label>
+                <input type="text" value="{{ n }}" name="created" id="id_created" />
+            </p>
+            <p>
+                <input type="text" name="title" id="id_title" placeholder="标题字数10字以上" value="{{ post.title }}" >
+            </p>
+
+            <div id="editor" name="content"></div>
+            <p>
+                <label for="id_status">状态：</label>
+                <select name="status" id="id_status">
+                    <option value="published" selected="selected">发布</option>
+                    <option value="draft" >草稿</option>
+                </select>
+                <label for="id_tags">标签：</label>
+                <input type="text" name="tags" id="id_tags" placeholder="以,分割" {% if post.tags %} value="{{ post.tags }}" {% endif %}>
+                <input type="checkbox" name="top" id="id_top" {% if post.top %}  checked="checked" {% endif %}>
+                <label for="id_top">置顶</label>
+                <input type="checkbox" name="good" id="id_good" {% if post.good %}  checked="checked" {% endif %}>
+                <label for="id_good">精华</label>
+                <input type="checkbox" name="deleted" id="id_deleted" {% if post.deleted %}  checked="checked" {% endif %}>
+                <label for="id_deleted">删除</label>
+                <input id="old_content" value="{{ post.content }}" type="hidden">
+            </p>
+            <div class="buttons">
+                <input type="submit" value="提交" class="btn">
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="{% static 'js/article/create.js' %}"></script>
+</html>

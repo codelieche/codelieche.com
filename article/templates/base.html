@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %}</title>
+    {% load staticfiles %}
+    {% load self_tags %}
+    <link rel="stylesheet" href="{% static '/css/markdown.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}" type="text/css">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+</head>
+<body>
+    {% block container %}
+        <div class="container">
+            {% block sidebar-left %}
+                <div class="sidebar-left">
+                    <!--网站的logo-->
+                    <div class="logo">
+                        <a href="/" title="编程列车">
+                            <img src="{% static 'img/logo.svg' %}" >
+                        </a>
+                        <a class="btn-nav" onclick="btnNavClick()">
+                            <i class="icon-menu"></i>
+                        </a>
+                    </div>
+                    <!--网站文章目录导航-->
+                    {% get_all_article_categories as categories %}
+                        <ul class="nav" id="nav">
+                            {% if categories %}
+                                {% for category in categories %}
+                                    <li><a href="/category/{{ category.slug }}">{{ category.title }}</a></li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                </div>
+            {% endblock %}
+            <div class="main">
+                <div class="content fl">
+                     {% block content %}
+
+                     {% endblock %}
+                </div>
+                <div class="sidebar fr">
+                {% block sidebar %}
+                    <!--文章标签-->
+                    <div class="panel">
+                        <div class="header">热门标签</div>
+                        <div class="inner">
+                            <!--文章标签列表-->
+                            {% get_hot_article_tags as article_tags %}
+                            <ul class="tags">
+                                {% for tag in article_tags %}
+                                <li>
+                                    <a class="tag" href="/tags/{{ tag.slug }}">{{ tag.name }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!--最新文章-->
+                    {% get_latest_posts %}
+                    <!--热门评论文章-->
+                    {% get_most_polular_posts as polular_posts %}
+                    <div class="panel">
+                        <div class="header">热门文章</div>
+                        <div class="inner">
+                            <ul class="article-list">
+                                {% for post in polular_posts %}
+                                <li>
+                                    <a href="/article/{{ post.pk }}">{{ post.title }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endblock %}
+                </div>
+            </div>
+
+        </div>
+
+    {% endblock %}
+</body>
+<script type="text/javascript">
+    function btnNavClick() {
+        var h = document.getElementById('nav').style.height;
+        if(h == 'auto'){
+            document.getElementById('nav').style.height = '0px';
+        }else{
+            document.getElementById('nav').style.height = 'auto';
+        }
+    }
+</script>
+</html>

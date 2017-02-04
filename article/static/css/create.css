@@ -1,0 +1,126 @@
+@charset "UTF-8";
+a {
+  text-decoration: none;
+  color: #555; }
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0; }
+  ul li {
+    margin-left: 0; }
+
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
+.clear {
+  clear: both; }
+
+body {
+  background-color: #eee;
+  font-size: 14px;
+  color: #555;
+  font-size: 14px;
+  font-family: "PingFang SC","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","微软雅黑","华文细黑",sans-serif;
+  text-align: left;
+  min-width: 100%;
+  min-height: 100%; }
+
+input:focus, textarea, textarea:focus, select {
+  outline: none; }
+
+.container {
+  width: 90%;
+  margin: 0 auto; }
+  .container .content {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #fff;
+    position: relative; }
+    .container .content .message {
+      position: absolute;
+      top: 15px;
+      background-color: #f0efd0;
+      width: 150px;
+      margin: 5px 40%;
+      display: none;
+      text-align: center;
+      border-radius: 5px;
+      font-size: 14px;
+      padding: 3px 10px;
+      color: #555;
+      border: 1px solid #F8F8F8; }
+    .container .content .message.red {
+      background-color: #f0dfaf;
+      color: #FF1717 !important; }
+    .container .content p {
+      padding: 10px; }
+    .container .content select {
+      padding: 4px 6px;
+      font-size: 14px;
+      line-height: 30px;
+      height: 30px; }
+      .container .content select option {
+        padding: 14px; }
+    .container .content #id_category {
+      width: 200px; }
+    .container .content select#id_status {
+      width: 60px;
+      margin-right: 10px; }
+    .container .content input {
+      padding: 4px 6px;
+      font-size: 15px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      border: 1px solid #CCC; }
+    .container .content #id_title {
+      width: 100%;
+      margin-bottom: 5px; }
+    .container .content #id_tags {
+      width: 300px;
+      margin-right: 25px; }
+    .container .content .buttons {
+      position: absolute;
+      bottom: 10px;
+      padding: 5px;
+      right: 50px;
+      text-align: center; }
+      .container .content .buttons .btn {
+        width: 100px;
+        height: 40px;
+        text-align: center; }
+
+.upload {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 99; }
+  .upload .content {
+    margin: 200px auto;
+    background-color: #fff;
+    width: 400px;
+    padding: 20px 10px; }
+    .upload .content #id_filename {
+      margin-left: 10px;
+      width: 250px;
+      margin-bottom: 10px;
+      padding: 3px 5px;
+      font-size: 15px;
+      border: 1px solid #CCC;
+      border-radius: 5px; }
+    .upload .content .buttons {
+      margin-top: 10px; }
+    .upload .content .btn {
+      width: 100px;
+      height: 40px;
+      text-align: center;
+      cursor: pointer;
+      margin-right: 20px; }
+
+/*# sourceMappingURL=create.css.map */

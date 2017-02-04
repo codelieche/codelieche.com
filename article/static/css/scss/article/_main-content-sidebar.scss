@@ -1,0 +1,61 @@
+@charset "UTF-8";
+/*这里：只控制 .mian区域内，content 和 sidebar的比例啊，布局啥的*/
+.container .main {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: row;
+  .content {
+    flex: 1;
+    margin-left: 190px;
+    padding: 20px 25px 0;
+    overflow: hidden;
+  }
+  .sidebar {
+    width: 300px;
+    padding-top: 20px;
+    margin-right: 5px;
+  }
+}
+
+// 响应式布局开始
+
+@media all and (max-width: 960px) {
+  .container {
+    width: 100%;
+    .main {
+      width: 100%;
+      .sidebar {
+        display: none;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 760px) {
+  .container {
+    width: 100%;
+    //当进入小屏的时候，左边的导航要移到上部
+    //.sidebar-left 在_sidebar-left中设置
+    .main {
+      width: 100%;
+      //margin-bottom: 20px;
+      .content {
+        margin: 0 auto;
+        padding: 10px 10px 0;
+        .articles .item .item-info .title {
+          display: block;
+          width: 100%;
+          box-sizing: border-box;
+        }
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  }
+  //  底部样式不显示
+  .footer {
+    display: none;
+  }
+}

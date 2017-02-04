@@ -1,0 +1,198 @@
+pre code {
+    background-color: #3f3f3f;
+    color: #fff;
+}
+.codehilite code, .codehilite pre{color:#fdce93;background-color:#3f3f3f}
+.codehilite .hll{background-color:#222}
+.codehilite .c{color:#7f9f7f}
+.codehilite .err{color:#e37170;background-color:#3d3535}
+.codehilite .g{color:#7f9f7f}
+.codehilite .k{color:#f0dfaf}
+.codehilite .l{color:#ccc}
+.codehilite .n{color:#dcdccc}
+.codehilite .o{color:#f0efd0}
+.codehilite .x{color:#ccc}
+.codehilite .p{color:#41706f}
+.codehilite .cm{color:#7f9f7f}
+.codehilite .cp{color:#7f9f7f}
+.codehilite .c1{color:#7f9f7f}
+.codehilite .cs{color:#cd0000;font-weight:bold}
+.codehilite .gd{color:#cd0000}
+.codehilite .ge{color:#ccc;font-style:italic}
+.codehilite .gr{color:red}
+.codehilite .gh{color:#dcdccc;font-weight:bold}
+.codehilite .gi{color:#00cd00}
+.codehilite .go{color:gray}
+.codehilite .gp{color:#dcdccc;font-weight:bold}
+.codehilite .gs{color:#ccc;font-weight:bold}
+.codehilite .gu{color:purple;font-weight:bold}
+.codehilite .gt{color:#0040D0}
+.codehilite .kc{color:#dca3a3}
+.codehilite .kd{color:#ffff86}
+.codehilite .kn{color:#dfaf8f;font-weight:bold}
+.codehilite .kp{color:#cdcf99}
+.codehilite .kr{color:#cdcd00}
+.codehilite .kt{color:#00cd00}
+.codehilite .ld{color:#cc9393}
+.codehilite .m{color:#8cd0d3}
+.codehilite .s{color:#cc9393}
+.codehilite .na{color:#9ac39f}
+.codehilite .nb{color:#efef8f}
+.codehilite .nc{color:#efef8f}
+.codehilite .no{color:#ccc}
+.codehilite .nd{color:#ccc}
+.codehilite .ni{color:#c28182}
+.codehilite .ne{color:#c3bf9f;font-weight:bold}
+.codehilite .nf{color:#efef8f}
+.codehilite .nl{color:#ccc}
+.codehilite .nn{color:#8fbede}
+.codehilite .nx{color:#ccc}
+.codehilite .py{color:#ccc}
+.codehilite .nt{color:#9ac39f}
+.codehilite .nv{color:#dcdccc}
+.codehilite .ow{color:#f0efd0}
+.codehilite .w{color:#ccc}
+.codehilite .mf{color:#8cd0d3}
+.codehilite .mh{color:#8cd0d3}
+.codehilite .mi{color:#8cd0d3}
+.codehilite .mo{color:#8cd0d3}
+.codehilite .sb{color:#cc9393}
+.codehilite .sc{color:#cc9393}
+.codehilite .sd{color:#cc9393}
+.codehilite .s2{color:#cc9393}
+.codehilite .se{color:#cc9393}
+.codehilite .sh{color:#cc9393}
+.codehilite .si{color:#cc9393}
+.codehilite .sx{color:#cc9393}
+.codehilite .sr{color:#cc9393}
+.codehilite .s1{color:#cc9393}
+.codehilite .ss{color:#cc9393}
+.codehilite .bp{color:#efef8f}
+.codehilite .vc{color:#efef8f}
+.codehilite .vg{color:#dcdccc}
+.codehilite .vi{color:#ffffc7}
+.codehilite .il{color:#8cd0d3}
+
+
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+ul li{
+    list-style: disc;
+
+    display: list-item;
+    text-align: -webkit-match-parent;
+    margin-left:20px;
+}

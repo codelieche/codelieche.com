@@ -1,0 +1,128 @@
+@charset "utf-8";
+
+.container  .main  .content {
+    .articles {
+      background-color: #fff;
+      -webkit-border-radius:5px;
+      -moz-border-radius:5px;
+      border-radius:5px;
+        .item {
+            padding: 10px;
+            display: flex;
+            text-align: left;
+            background-color: #fff;
+            //box-shadow: 0 1px 3px rgba(0,0,0,.4);
+            transition: all 0.15s ease;
+            border-bottom: 1px solid #E2E2E2;
+            &:hover {
+              background-color: #F8F8F8;
+            }
+            .item-img {
+                float: left;
+                width: 240px;
+                img {
+                    width: 240px;
+                    height: 180px;
+                }
+            } // 文章左边的图片样式
+            .item-info {
+                flex: 1;
+                //padding-left: 10px;
+                float: right;
+                .title {
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin-top: 0;
+                    margin-bottom: 0px;
+                    //line-height: 1.5;
+                    line-height: 30px;
+                    color: #555555;
+                    display: inline-block;
+                    &:hover {
+                      color: black;
+                    }
+                }
+                .meta {
+                    font-size: 12px;
+                    color: #999999;
+                  margin-top:5px;
+                    span {
+                        margin-right: 10px;
+                    }
+                }
+                ul.taglist {
+                  display: inline-block;
+                  list-style: none;
+                  padding: 0;
+                  margin-left: 0;
+                  font-size: 12px;
+                  li {
+                    display: inline-block;
+                    margin-right: 5px;
+                    margin-left: 0px;
+                    a {
+                      color: #999;
+                      &:hover{
+                        color: #444;
+                      }
+                    }
+                  }
+                }
+            } // 文章右边的信息样式
+        }//文章.item信息结束
+    }
+}
+
+@media all and (max-width: 760px) {
+  .container .main .content {
+    .articles {
+      .item {
+        .item-img {
+          width: 240px;
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+        .item-info {
+          flex: 2;
+        }
+      }
+    }
+  }
+}
+//当屏幕屏幕小于480px的时候，列表页只显示图片和文章标题以及meta信息
+@media all and (max-width: 480px) {
+  .container .main .content{
+    .articles {
+      .item {
+        display: block;
+        .item-img{
+          width: 100%;
+          box-sizing: border-box;
+          float: none;
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+        .item-info {
+          float: none;
+          //让meta信息只显示一行
+          .meta {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-overflow: -o-ellipsis-lastline;
+            text-overflow: -webkit-ellipsis-lastline;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+          }
+          .summary {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
