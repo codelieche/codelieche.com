@@ -1,5 +1,5 @@
 #!/bin/bash
-NAME="SITENAME"
+NAME="codelieche"
 USER=USERNAME
 WORKERS=2
 DJANGODIR=/data/www/SITENAME

@@ -70,7 +70,7 @@ def deploy_settings():
 
 
 def reload():
-    run('sudo supervisorctl restart %s' % SITE_NAME)
+    run('sudo supervisorctl restart codelieche')
 
 def hello():
     print('Hello fab!')
