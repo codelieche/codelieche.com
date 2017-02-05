@@ -18,3 +18,10 @@ codelieche.com/
 └── virtualenv 项目运行环境
 ```
 
+
+## 项目发布
+
+### 环境准备
+1. 服务器，系统是debian或者ubuntu，其它流程一样，代码需要微调
+2. 服务器上，手动安装python开发环境
+3. 安装好nginx和supervisor
