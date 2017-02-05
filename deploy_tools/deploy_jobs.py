@@ -39,7 +39,7 @@ def _update_settings(source_folder, site_name):
     # 设置允许的域名
     sed(settings_path,
         'ALLOWED_HOSTS = .+$',
-        'ALLOWED_HOSTS =["%s, www.%s"]' % (site_name, site_name)
+        'ALLOWED_HOSTS =["%s", "www.%s"]' % (site_name, site_name)
     )
     # 如果'secrret_key.py' 文件不存在，则创建密匙文件
     secret_key_file = source_folder + '/codelieche/secret_key.py'
@@ -68,5 +68,20 @@ def _update_static_files(source_folder):
 
 def _update_database(source_folder):
     '''更新数据库文件'''
-    run('cd %s && ../virtualenv/bin/python3 '\
-      'manage.py migrate --noinput' % source_folder)
+    mysql_db_name = _inpute_value("请输入网站使用的数据库名:")
+    mysql_user = _inpute_value("请输入mysql数据库用户名:")
+    mysql_password = _inpute_value("请输入mysql数据库密码:")
+    export_cmd = "export MYSQL_DB_NAME=%s MYSQL_USER=%s MYSQL_PASSWORD=%s" % (
+        mysql_db_name, mysql_user, mysql_password
+    )
+    print(export_cmd)
+    run('cd %s && %s && ../virtualenv/bin/python3 '\
+    'manage.py migrate --noinput' % (source_folder, export_cmd))
+
+def _inpute_value(notes):
+    result = ''
+    try:
+        result = raw_input(notes)
+    except Exception:
+        result = input(notes)
+    return result

@@ -9,6 +9,7 @@ from deploy_jobs import _update_settings
 from deploy_jobs import _update_virtualenv
 from deploy_jobs import _update_static_files
 from deploy_jobs import _update_database
+from deploy_jobs import _inpute_value
 
 SITE_NAME = 'staging.codelieche.com'
 
@@ -43,7 +44,7 @@ def deploy_settings():
         run('pwd')
         run('sed "s/SITENAME/%s/g" deploy_tools/nginx.template.conf |'\
             ' sed "s/USERNAME/%s/g" | sudo tee /etc/nginx/sites-enabled/%s' % (
-                SITE_NAME,SITE_NAME, env.user))
+                SITE_NAME, env.user, SITE_NAME))
     # 第二步: 写入gunicorn执行脚本
     with cd(source_folder):
         # 进入source_folder
@@ -62,20 +63,14 @@ def deploy_settings():
         # print(mysql_user, mysql_password)
         run('sed "s/SITENAME/%s/g" deploy_tools/gunicorn-supervisor.template.conf |'\
             ' sed "s/USERNAME/%s/g" | sed "s/MYSQL_USER_VALUE/%s/g" |'\
-            ' sed "s/MYSQL_PASSWORD_VALUE/%s/g" | sed s"s/MYSQL_DB_NAME_VALUE/%s/g" |'\
+            ' sed "s/MYSQL_PASSWORD_VALUE/%s/g" | sed "s/MYSQL_DB_NAME_VALUE/%s/g" |'\
             ' sudo tee /etc/supervisor/conf.d/%s.conf' % (
                 SITE_NAME, env.user, mysql_user, mysql_password, mysql_db_name, SITE_NAME))
 
-def _inpute_value(notes):
-    result = ''
-    try:
-        result = raw_input(notes)
-    except Exception:
-        result = input(notes)
-    return result
+
 
 def reload():
-    run('sudo supervisorctl restart codelieche')
+    run('sudo supervisorctl restart %s' % SITE_NAME)
 
 def hello():
     print('Hello fab!')
