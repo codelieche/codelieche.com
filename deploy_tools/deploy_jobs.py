@@ -39,8 +39,9 @@ def _update_settings(source_folder, site_name):
     # 设置允许的域名
     sed(settings_path,
         'ALLOWED_HOSTS = .+$',
-        'ALLOWED_HOSTS =["%s", "www.%s"]' % (site_name, site_name)
-    )
+
+        'ALLOWED_HOSTS =["%s, www.%s"]' % (site_name, site_name)
+       )
     # 如果'secrret_key.py' 文件不存在，则创建密匙文件
     secret_key_file = source_folder + '/codelieche/secret_key.py'
     if not exists(secret_key_file):
@@ -79,6 +80,7 @@ def _update_database(source_folder):
     'manage.py migrate --noinput' % (source_folder, export_cmd))
 
 def _inpute_value(notes):
+    '''用户输入信息'''
     result = ''
     try:
         result = raw_input(notes)

@@ -4,8 +4,8 @@ from .models import Tag
 
 self_signal = Signal(providing_args=['self_signal_args'])
 
-@receiver(pre_save,sender=Tag)
+@receiver(pre_save, sender=Tag)
 def preSaveFun(sender, **kwargs):
-    print('pre save fun',sender,kwargs)
+    print('pre save fun', sender,kwargs)
     print("============")
 

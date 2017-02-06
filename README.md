@@ -25,3 +25,15 @@ codelieche.com/
 1. 服务器，系统是debian或者ubuntu，其它流程一样，代码需要微调
 2. 服务器上，手动安装python开发环境
 3. 安装好nginx和supervisor
+
+### 部署项目
+1. 进入deploy_tools: `cd deploy_tools`
+1. 部署代码到服务器: `fab -H user@192.168.1.123 deploy`
+    > 部署代码到服务器，注意user需要拥有对`/data/www`目录的读写权限
+
+1. 配置nginx和supervisor: `fab -H user@192.168.1.123 deploy_settings`
+    > 需要用到sudo，需要输入用户密码，而且需要有sudo的权限。
+
+1. 手动去reload nginx和启动supervisor任务，有问题先单独运行`../run.sh`脚本试试看
+    > sudo service nginx reload && sudo supervisorctl start codelieche
+

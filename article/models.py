@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
+from django.core.urlresolvers import reverse
 
 # 文章标签管理器，依赖django-taggit包
 from .libs.storage import ImageStorage
@@ -27,15 +28,22 @@ class Category(models.Model):
 # 创建标签类
 @python_2_unicode_compatible
 class Tag(models.Model):
-    slug = models.SlugField(max_length=15, verbose_name="网址",blank=True)
+    slug = models.SlugField(max_length=15, verbose_name="网址", blank=True)
     name = models.CharField(max_length=30, verbose_name="名称")
-    hot = models.BooleanField(default=False,verbose_name="热门")
+    hot = models.BooleanField(default=False, verbose_name="热门")
 
     class Meta:
         verbose_name = "标签"
         verbose_name_plural = "标签列表"
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        '''自动创建标签，slug设置为一个数字'''
+        if not self.slug:
+            self.slug = Tag.objects.count()
+        super(Tag, self).save(*args, **kwargs)
 
     @staticmethod
     def get_or_create(name):
@@ -48,6 +56,11 @@ class Tag(models.Model):
             tag = Tag(name=name)
             tag.save()
             return tag
+
+    def get_absolute_url(self):
+        '''tag的绝对路径'''
+        return reverse('post_tag_list', args=[self.name])
+
 # 自定义文章的manager
 class PostPublishedManager(models.Manager):
     def get_queryset(self):
@@ -82,7 +95,7 @@ class Post(models.Model):
     # 文章内容 html
     # content_html = models.TextField(verbose_name="文章内容html",blank=True)
     # 文章作者
-    author = models.ForeignKey(User,related_name='articles',verbose_name="作者")
+    author = models.ForeignKey(User, related_name='articles', verbose_name="作者")
     # 文章分类
     category = models.ForeignKey(Category, related_name="posts", verbose_name="分类")
     # related_name 是可以让 category对象.posts获取所有的帖子
@@ -90,22 +103,22 @@ class Post(models.Model):
     # 创建时间
     created = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     # 更新时间
-    updated = models.DateTimeField(auto_now=True,verbose_name="更新时间")
+    updated = models.DateTimeField(auto_now=True, verbose_name="更新时间")
     # 帖子状态 发布/草稿
     status = models.CharField(max_length=10, choices=STATUS_CHOICES,
                               default='published', verbose_name="状态")
 
     # 帖子是否置顶
-    top = models.BooleanField(default=False,verbose_name="置顶")
+    top = models.BooleanField(default=False, verbose_name="置顶")
     # 帖子是否精华
-    good = models.BooleanField(default=False,verbose_name="精华")
+    good = models.BooleanField(default=False, verbose_name="精华")
     # 帖子是否删除
-    deleted = models.BooleanField(default=False,verbose_name="删除")
+    deleted = models.BooleanField(default=False, verbose_name="删除")
 
     # 帖子访问统计
-    visit_count = models.IntegerField(default=0,verbose_name="访问量")
+    visit_count = models.IntegerField(default=0, verbose_name="访问量")
     # 帖子回复数
-    reply_count = models.IntegerField(default=0,verbose_name="回复数")
+    reply_count = models.IntegerField(default=0, verbose_name="回复数")
 
     # 管理器 mannager， 默认只有objects
     objects = models.Manager() # 默认的manager
@@ -114,7 +127,7 @@ class Post(models.Model):
     # 文章的标签，依赖django-taggit库
     # tags = TaggableManager() # Post.tags.all() / pObj.tags.all()
     # tags = TaggableManager(through=TaggedItem) # Post.tags.all() / pObj.tags.all()
-    tags = models.ManyToManyField(to=Tag,related_name='articles',verbose_name="标签")
+    tags = models.ManyToManyField(to=Tag, related_name='articles', verbose_name="标签")
     #获取打了标签的对象  t1.taggit_taggeditem_items.all() t1是Taggit的Tag对象
     # 用了自定义的TaggedItem,设置related_name为articles，
     # 那么通过：t1.articles.all()可以获取所有打了t1标签的文章对象的pk
@@ -122,6 +135,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        '''获取文章的绝对路径'''
+        return reverse('article:post_detail', kwargs={'pk': self.pk})
 
     # model元数据
     class Meta:
@@ -135,13 +152,13 @@ class Post(models.Model):
 class Comment(models.Model):
     # user = models.ForeignKey(User,related_name='comments',verbose_name="用户")
     # 是哪条文章的评论
-    post = models.ForeignKey(Post,related_name="comments", verbose_name="文章")
+    post = models.ForeignKey(Post, related_name="comments", verbose_name="文章")
     # 评论内容
     content = models.TextField(verbose_name="评论内容")
-    name = models.CharField(verbose_name="用户名",max_length=40,default="匿名用户")
+    name = models.CharField(verbose_name="用户名", max_length=40, default="匿名用户")
 
     # 评论时间
-    created = models.DateTimeField(auto_now_add=True,verbose_name="评论时间")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="评论时间")
     # 更新时间
     updated = models.DateTimeField(auto_now=True, verbose_name="更新时间")
     # 评论是否可以查看，是否是激活的
@@ -157,11 +174,11 @@ class Comment(models.Model):
 
 @python_2_unicode_compatible
 class Upload(models.Model):
-    user = models.ForeignKey(User,related_name='images',verbose_name="用户")
-    filename = models.ImageField(upload_to="img/%Y/%m",storage=ImageStorage(),verbose_name="图片")
-    created = models.DateTimeField(auto_now_add=True,verbose_name="上传时间")
-    qiniu_url = models.CharField(verbose_name="七牛Url",blank=True,max_length=200)
-    deleted = models.BooleanField(default=False,verbose_name="删除")
+    user = models.ForeignKey(User,related_name='images', verbose_name="用户")
+    filename = models.ImageField(upload_to="img/%Y/%m", storage=ImageStorage(), verbose_name="图片")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="上传时间")
+    qiniu_url = models.CharField(verbose_name="七牛Url", blank=True,max_length=200)
+    deleted = models.BooleanField(default=False, verbose_name="删除")
 
 
     def __str__(self):
