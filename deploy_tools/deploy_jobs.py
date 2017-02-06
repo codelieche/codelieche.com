@@ -69,6 +69,9 @@ def _update_static_files(source_folder):
 
 def _update_database(source_folder):
     '''更新数据库文件'''
+    ask_update_db = _inpute_value("是否需要更新数据库表格:Y or N")
+    if ask_update_db.upper() == 'N':
+        return
     mysql_db_name = _inpute_value("请输入网站使用的数据库名:")
     mysql_user = _inpute_value("请输入mysql数据库用户名:")
     mysql_password = _inpute_value("请输入mysql数据库密码:")
