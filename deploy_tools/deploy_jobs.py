@@ -40,7 +40,7 @@ def _update_settings(source_folder, site_name):
     sed(settings_path,
         'ALLOWED_HOSTS = .+$',
         'ALLOWED_HOSTS =["%s, www.%s"]' % (site_name, site_name)
-    )
+       )
     # 如果'secrret_key.py' 文件不存在，则创建密匙文件
     secret_key_file = source_folder + '/codelieche/secret_key.py'
     if not exists(secret_key_file):
