@@ -9,7 +9,7 @@
             <div class="item">
                 <div class="item-info">
                     <div>
-                        <a href="/article/{{ post.pk }}">
+                        <a href="{% url 'article:post_detail' post.pk %}">
                             <h2 class="title">{{ post.title }}</h2>
                         </a>
                     </div>

@@ -1,14 +1,15 @@
 #coding=utf-8
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse,HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-
 import json
-from .models import Category,Post,Tag,Comment,Upload
-from .forms import PostForm,ImageForm
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from account.models import UserData
-from django.core.exceptions import ObjectDoesNotExist
+
+from .models import Category, Post, Tag, Upload
+from .forms import PostForm, ImageForm
 from .libs.article import get_article_id
 # Create your views here.
 
@@ -16,34 +17,34 @@ def index(request):
     object_list = Post.published.all()
 
     posts = object_list
-    return render(request,"article/list.html",{"posts":posts})
+    return render(request, "article/list.html", {"posts":posts})
 
-def post_category_list(request,category_slug):
+def post_category_list(request, category_slug):
     # category = Category.objects.get(slug = category_slug)
     category = get_object_or_404(Category, slug=category_slug)
     posts = Post.published.filter(category=category)
-    if posts :
-        return render(request,"article/list.html",{"category":category,"posts":posts})
-    else :
-        return render(request,"article/list.html",{"category":category,"posts":[]})
+    if posts:
+        return render(request, "article/list.html", {"category": category, "posts": posts})
+    else:
+        return render(request, "article/list.html", {"category":category, "posts":[]})
 
-def post_tag_list(request,tag_name):
+def post_tag_list(request, tag_name):
     # object_list = Post.objects.filter(status="published")
     # posts = Post.published.filter(tags__in = ['python'])
 
     # tag = Tag.objects.get(slug=tag_slug)
     # 有时候会是错误的slug，故用get_object_or_404
     # print(tag_name)
-    tag = get_object_or_404(Tag,slug=tag_name)
+    tag = get_object_or_404(Tag, slug=tag_name)
     # print(tag)
     posts = tag.articles.all()
     # print(posts)
     # print(posts_id.all())
 
     # posts = Post.published.filter(tags__name__in=[tag_name])
-    return render(request,"article/list_tag.html",{"tag":tag,"posts":posts})
+    return render(request, "article/list_tag.html", {"tag":tag, "posts":posts})
 
-def post_detail(request,pk):
+def post_detail(request, pk):
     """
     :param request:
     :param pk: 文章的ID号，主键号
@@ -56,7 +57,7 @@ def post_detail(request,pk):
         post = Post.published.get(pk=pk)
         post.visit_count += 1
         post.save(update_fields=['visit_count'])
-        return render(request,"article/detail.html",{"post":post})
+        return render(request, "article/detail.html", {"post":post})
     except Exception as e:
         # 这个情况可能是帖子删除了，也可能是帖子状态是草稿，再次获取一次
         try:
@@ -84,7 +85,7 @@ def create(request):
         ud = request.user.userdatas.get(type="article")
     except ObjectDoesNotExist:
         # article的数据还不存在，那么就创建一个吧
-        ud = UserData(user=request.user,type="article",content="")
+        ud = UserData(user=request.user, type="article", content="")
     #ud.content中的false,true没有加双引号的，所以这里定义一下，false，true
     false = False
     true = True
@@ -110,16 +111,16 @@ def create(request):
             status = form['status']
             tags = form['tags']
             if tags.find('，') > 0:
-                tags = tags.replace("，",",")
+                tags = tags.replace("，", ",")
             top = form['top']
             good = form['good']
             deleted = form['deleted']
             created = form['created']
             post_pk = get_article_id(created)
             # print(category,title,content,status,tags)
-            post = Post(pk=post_pk,category=category,title=title,content=content,
-                        status=status,author=request.user,
-                        top=top,good=good,deleted=deleted)
+            post = Post(pk=post_pk, category=category, title=title, content=content,
+                        status=status, author=request.user,
+                        top=top, good=good, deleted=deleted)
 
             # print(post.tags)
             post.save()
@@ -137,15 +138,17 @@ def create(request):
             if post.deleted:
                 return HttpResponseRedirect(redirect_to="/")
             else:
-                return HttpResponseRedirect(redirect_to="/article/%s" % post.pk)
+                # return HttpResponseRedirect(redirect_to="/article/%s" % post.pk)
+                return redirect(post)
+
         # 如果表单没有验证成功，就重新进入编辑页面
         return HttpResponseRedirect(redirect_to="/article/create")
 
     else :
-        return render(request,"article/create.html",{"post":post,"categories":categories})
+        return render(request, "article/create.html", {"post":post, "categories":categories})
 
 @login_required(login_url="/user/login")
-def editor(request,pk=None):
+def editor(request, pk=None):
     categories = Category.objects.all()
     # 得到 编辑的文章对象
     post = Post.objects.get(pk=pk)
@@ -164,7 +167,7 @@ def editor(request,pk=None):
             status = form['status']
             tags = form['tags']
             if tags.find('，') > 0:
-                tags = tags.replace("，",",")
+                tags = tags.replace("，", ",")
             top = form['top']
             good = form['good']
             deleted = form['deleted']
@@ -187,11 +190,11 @@ def editor(request,pk=None):
                     post.tags.add(tag)
             if deleted:
                 return HttpResponseRedirect("/")
-        return HttpResponseRedirect(redirect_to="/article/%s" % post.pk)
-
-    else :
+        # return HttpResponseRedirect(redirect_to="/article/%s" % post.pk)
+        return redirect(post)
+    else:
         form = PostForm()
-    return render(request,"article/editor.html",{"post":post,"categories":categories})
+    return render(request, "article/editor.html", {"post":post, "categories":categories})
 
 @login_required(login_url="/user/login")
 def save(request):
@@ -216,28 +219,30 @@ def save(request):
             # print(form)
             ud.user = request.user
             ud.save()
-            return HttpResponse(json.dumps({"sucess":True}),content_type="application/json")
+            return HttpResponse(json.dumps({"sucess":True}), content_type="application/json")
         return HttpResponse(json.dumps({"sucess": False}),
-                                content_type="application/json")
-    else :
+                            content_type="application/json")
+    else:
         # /article/save 只能是POST访问
         return HttpResponse(status=404)
 
 @login_required(login_url="/user/login")
 def upload_image(request):
+    '''上传图片'''
     if request.method == "GET":
         form = ImageForm()
-    else :
-        form = ImageForm(request.POST,request.FILES)
+    else:
+        form = ImageForm(request.POST, request.FILES)
         # file = request.FILES['filename']
         # print(dir(request.FILES['filename']))
         # print(file.size)
         if form.is_valid():
-            image = Upload(filename=form.cleaned_data['filename'],user=request.user)
+            image = Upload(filename=form.cleaned_data['filename'], user=request.user)
             image.save()
             response_data = {}
             response_data['sucess'] = 'true'
             response_data['url'] = '/media/%s' % image
-            return HttpResponse(json.dumps(response_data),content_type="application/json")
-        return HttpResponse(json.dumps({'sucess':False}),content_type="application/json",status=400)
-    return render(request,"article/upload_image.html",{'form':form})
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        return HttpResponse(json.dumps({'sucess':False}),
+                            content_type="application/json", status=400)
+    return render(request, "article/upload_image.html", {'form': form})
