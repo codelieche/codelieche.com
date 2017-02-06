@@ -144,11 +144,12 @@ def create(request):
         # 如果表单没有验证成功，就重新进入编辑页面
         return HttpResponseRedirect(redirect_to="/article/create")
 
-    else :
+    else:
         return render(request, "article/create.html", {"post":post, "categories":categories})
 
 @login_required(login_url="/user/login")
 def editor(request, pk=None):
+    '''文章编辑view'''
     categories = Category.objects.all()
     # 得到 编辑的文章对象
     post = Post.objects.get(pk=pk)
@@ -198,6 +199,7 @@ def editor(request, pk=None):
 
 @login_required(login_url="/user/login")
 def save(request):
+    '''创建文章中途保存'''
     # 从UserData中获取type为article的数据
     try:
         # ud = UserData.objects.get(type="article",user=request.user)

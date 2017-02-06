@@ -13,7 +13,7 @@ from deploy_jobs import _update_database
 SITE_NAME = 'staging.codelieche.com'
 
 def deploy():
-    
+    '''项目代码发布'''
     # site_folder = '/home/%s/sites/%s' % (env.user, SITE_NAME)
     site_folder = '/data/www/%s' %(SITE_NAME)
     source_folder = site_folder + '/source'
@@ -33,6 +33,7 @@ def deploy():
 
 
 def deploy_settings():
+    '''项目发布-服务器配置'''
     # run('sudo supervisorctl status codelieche')
     # site_folder = '/home/%s/sites/%s' % (env.user, SITE_NAME)
     site_folder = '/data/www/%s' %(SITE_NAME)
@@ -67,6 +68,7 @@ def deploy_settings():
                 SITE_NAME, env.user, mysql_user, mysql_password, mysql_db_name, SITE_NAME))
 
 def _inpute_value(notes):
+    '''用户输入信息'''
     result = ''
     try:
         result = raw_input(notes)
@@ -75,6 +77,7 @@ def _inpute_value(notes):
     return result
 
 def reload():
+    '''重启服务'''
     run('sudo supervisorctl restart codelieche')
 
 def hello():
