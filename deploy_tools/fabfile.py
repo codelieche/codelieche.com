@@ -11,7 +11,7 @@ from deploy_jobs import _update_static_files
 from deploy_jobs import _update_database
 from deploy_jobs import _inpute_value
 
-SITE_NAME = 'staging.codelieche.com'
+SITE_NAME = 'codelieche.com'
 
 def deploy():
     '''项目代码发布'''

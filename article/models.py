@@ -15,8 +15,8 @@ from .libs.storage import ImageStorage
 # 文章分类
 @python_2_unicode_compatible
 class Category(models.Model):
-    slug = models.SlugField(max_length=10,verbose_name="分类网址",unique=True)
-    title = models.CharField(max_length=40, verbose_name="分类名称",unique=True)
+    slug = models.SlugField(max_length=10, verbose_name="分类网址", unique=True)
+    title = models.CharField(max_length=40, verbose_name="分类名称", unique=True)
 
     def __str__(self):
         return self.title
@@ -174,10 +174,10 @@ class Comment(models.Model):
 
 @python_2_unicode_compatible
 class Upload(models.Model):
-    user = models.ForeignKey(User,related_name='images', verbose_name="用户")
+    user = models.ForeignKey(User, related_name='images', verbose_name="用户")
     filename = models.ImageField(upload_to="img/%Y/%m", storage=ImageStorage(), verbose_name="图片")
     created = models.DateTimeField(auto_now_add=True, verbose_name="上传时间")
-    qiniu_url = models.CharField(verbose_name="七牛Url", blank=True,max_length=200)
+    qiniu_url = models.CharField(verbose_name="七牛Url", blank=True, max_length=200)
     deleted = models.BooleanField(default=False, verbose_name="删除")
 
 
