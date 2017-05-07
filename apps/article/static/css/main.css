@@ -1,5 +1,17 @@
 @charset "UTF-8";
 @import url(normalize.css);
+body {
+  background-color: #eee;
+  font-size: 14px;
+  color: #555;
+  font-size: 14px;
+  font-family: "PingFang SC","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","微软雅黑","华文细黑",sans-serif; }
+
+.container {
+  margin: 0 auto;
+  max-width: 1320px;
+  position: relative; }
+
 a {
   text-decoration: none;
   color: #555; }
@@ -201,18 +213,6 @@ ul {
       margin-top: 0;
       margin-bottom: 0px; }
 
-body {
-  background-color: #eee;
-  font-size: 14px;
-  color: #555;
-  font-size: 14px;
-  font-family: "PingFang SC","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","微软雅黑","华文细黑",sans-serif; }
-
-.container {
-  margin: 0 auto;
-  max-width: 1320px;
-  position: relative; }
-
 /*这里：只控制 .mian区域内，content 和 sidebar的比例啊，布局啥的*/
 .container .main {
   width: 100%;
@@ -385,23 +385,24 @@ body {
       margin-top: 0;
       margin-bottom: 0px; }
 
+/*
+  网站底部样式
+*/
 .footer {
   margin-top: 20px;
   text-align: center; }
+  .footer .copyright {
+    padding: 15px 0;
+    margin-top: 10px;
+    text-align: center;
+    line-height: 25px;
+    color: #999;
+    font-size: 13px; }
+    .footer .copyright a {
+      text-decoration: none;
+      color: #999; }
 
 footer {
   width: 100%; }
-
-.footer .footer_copyright {
-  padding: 15px 0;
-  margin-top: 10px;
-  text-align: center;
-  line-height: 25px;
-  color: #999;
-  font-size: 13px; }
-
-.footer .footer_copyright a {
-  text-decoration: none;
-  color: #999; }
 
 /*# sourceMappingURL=main.css.map */

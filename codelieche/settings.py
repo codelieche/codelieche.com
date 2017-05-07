@@ -135,6 +135,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
 
+
 # 上传的图片或者文件放在media中
 MEDIA_ROOT = os.path.join(BASE_DIR, "../media")
 MEDIA_URL = '/media/'

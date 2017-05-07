@@ -3,18 +3,6 @@
 $logoColor: #4A90E2;
 $bodyBackgroundColor: #eee;
 
-@import "normalize.css";
-
-//引入_base.scss
-@import "scss/article/_base.scss";
-
-//引入左边导航的样式
-@import "scss/article/_sidebar-left.scss";
-
-//引入右边 侧边栏的样式
-@import "scss/article/_sidebar.scss";
-@import "scss/article/_article-content.scss";
-
 body {
     background-color: $bodyBackgroundColor;
     font-size: 14px;
@@ -29,6 +17,18 @@ body {
     max-width: 1320px;
     position: relative;
 }
+
+@import "normalize.css";
+
+//引入_base.scss
+@import "scss/article/_base.scss";
+
+//引入左边导航的样式
+@import "scss/article/_sidebar-left.scss";
+
+//引入右边 侧边栏的样式
+@import "scss/article/_sidebar.scss";
+@import "scss/article/_article-content.scss";
 
 //引入 main区域，content和sidebar的布局
 @import "scss/article/_main-content-sidebar.scss";
