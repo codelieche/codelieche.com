@@ -1,4 +1,4 @@
-#coding:utf-8
+# -*- coding:utf-8 -*-
 import os
 from fabric.api import env, run
 from fabric.context_managers import cd

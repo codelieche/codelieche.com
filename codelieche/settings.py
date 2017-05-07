@@ -1,4 +1,4 @@
-#coding:utf-8
+# -*- coding:utf-8 -*-
 """
 Django settings for codelieche project.
 
@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# 把apps添加到path路径中，app🙆放apps中
+sys.path.append(os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'codelieche.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,9 +84,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DB_NAME', 'codelieche'),
         'USER': os.environ.get('MYSQL_USER', 'root'),
-        'PASSWORD':os.environ.get('MYSQL_PASSWORD', ''),
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -132,6 +134,7 @@ USE_TZ = True
 # python manage.py collectstatic会把静态文件保存到STATIC_ROOT目录中
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+
 
 # 上传的图片或者文件放在media中
 MEDIA_ROOT = os.path.join(BASE_DIR, "../media")

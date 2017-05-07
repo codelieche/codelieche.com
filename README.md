@@ -6,6 +6,8 @@
 3. 创建数据目录:`mkdir database` 在根目录下创建database目录，数据库的文件放到这个目录中
 4. 创建数据库表: `cd source && python manage.py migrate`
 5. 启动服务: `python manage.py runserver`
+6. 自己创建管理员用户: `python manage.py createsuperuser`
+7. 添加测试数据
 
 ### 目录说明:
 
