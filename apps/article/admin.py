@@ -1,13 +1,16 @@
-#coding:utf-8
+# -*- coding:utf-8 -*-
 from django.contrib import admin
 from django import forms
+
 from .models import Category, Post, Comment, Tag, Upload
 # Register your models here.
+
 
 class CategoryModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'slug']
     list_display_links = ['id', 'slug']
     ordering = ['id']
+
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -17,6 +20,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             # 'content': forms.
         }
+
 
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'author', 'created', 'status', 'top', 'good']
@@ -32,7 +36,6 @@ class PostModelAdmin(admin.ModelAdmin):
     # 后台增加文章的时候，content_html是不需要的，所以要自定义form
     form = PostForm
 
-
     class Media:
         css = {
             'all': (
@@ -40,6 +43,7 @@ class PostModelAdmin(admin.ModelAdmin):
                 '/static/css/main.css',
             )
         }
+
 
 # 评论模型管理
 class CommentModelAdmin(admin.ModelAdmin):
@@ -59,10 +63,12 @@ class CommentModelAdmin(admin.ModelAdmin):
     #         )
     #     }
 
+
 # 上传的图片管理模型
 class UploadModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'filename', 'created', 'deleted']
     ordering = ['-created']
+
 
 class TagModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'slug', 'hot']

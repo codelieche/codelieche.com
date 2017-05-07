@@ -1,23 +1,24 @@
-#coding=utf-8
+# -*- coding:utf-8 -*-
 import json
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 
 from account.models import UserData
-
-from .models import Category, Post, Tag, Upload
+from utils.article import get_article_id
 from .forms import PostForm, ImageForm
-from .libs.article import get_article_id
+from .models import Category, Post, Tag, Upload
 # Create your views here.
+
 
 def index(request):
     object_list = Post.published.all()
 
     posts = object_list
     return render(request, "article/list.html", {"posts":posts})
+
 
 def post_category_list(request, category_slug):
     # category = Category.objects.get(slug = category_slug)
@@ -27,6 +28,7 @@ def post_category_list(request, category_slug):
         return render(request, "article/list.html", {"category": category, "posts": posts})
     else:
         return render(request, "article/list.html", {"category":category, "posts":[]})
+
 
 def post_tag_list(request, tag_name):
     # object_list = Post.objects.filter(status="published")
@@ -43,6 +45,7 @@ def post_tag_list(request, tag_name):
 
     # posts = Post.published.filter(tags__name__in=[tag_name])
     return render(request, "article/list_tag.html", {"tag":tag, "posts":posts})
+
 
 def post_detail(request, pk):
     """
@@ -73,7 +76,6 @@ def post_detail(request, pk):
         except Exception as e:
             # print(e) #Post matching query does not exist.
             return HttpResponse(status=404)
-
 
 
 @login_required(login_url="/user/login")
@@ -147,6 +149,7 @@ def create(request):
     else:
         return render(request, "article/create.html", {"post":post, "categories":categories})
 
+
 @login_required(login_url="/user/login")
 def editor(request, pk=None):
     '''文章编辑view'''
@@ -197,6 +200,7 @@ def editor(request, pk=None):
         form = PostForm()
     return render(request, "article/editor.html", {"post":post, "categories":categories})
 
+
 @login_required(login_url="/user/login")
 def save(request):
     '''创建文章中途保存'''
@@ -227,6 +231,7 @@ def save(request):
     else:
         # /article/save 只能是POST访问
         return HttpResponse(status=404)
+
 
 @login_required(login_url="/user/login")
 def upload_image(request):

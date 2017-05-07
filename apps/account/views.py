@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding:utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 # from django.contrib.auth.models import User

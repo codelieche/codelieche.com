@@ -1,4 +1,4 @@
-#coding:utf-8
+# -*- coding:utf-8 -*-
 from django.test import TestCase
 from django.contrib.auth.models import User
 from article.models import Category, Tag, Post

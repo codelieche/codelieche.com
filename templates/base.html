@@ -7,7 +7,7 @@
     {% load self_tags %}
     <link rel="stylesheet" href="{% static '/css/markdown.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static '/css/main.css' %}" type="text/css">
-
+    {% block custom_css %}{% endblock %}
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
 </head>
 <body>
@@ -91,6 +91,7 @@
 		<!--底部内容end-->
     {% endblock %}
 </body>
+{% block custom_js %}{% endblock %}
 <script type="text/javascript">
     function btnNavClick() {
         var h = document.getElementById('nav').style.height;

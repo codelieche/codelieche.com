@@ -1,14 +1,13 @@
-#coding:utf-8
+# -*- coding:utf-8 -*-
 # from __future__ import unicode_literals
 
-from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import User
-from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
-# 文章标签管理器，依赖django-taggit包
-from .libs.storage import ImageStorage
+from utils.storage import ImageStorage
+
 
 # Create your models here.
 
@@ -24,6 +23,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "分类"
         verbose_name_plural = "分类列表"
+
 
 # 创建标签类
 @python_2_unicode_compatible
@@ -47,8 +47,8 @@ class Tag(models.Model):
 
     @staticmethod
     def get_or_create(name):
-        #根据传递的name  获取tag对象，或者创建对象,并返回创建的对象
-        #这个方法，在create,editor的时候 都要用到
+        # 根据传递的name  获取tag对象，或者创建对象,并返回创建的对象
+        # 这个方法，在create,editor的时候 都要用到
         t = Tag.objects.filter(name__iexact=name)
         if t:
             return t[0]
@@ -58,13 +58,15 @@ class Tag(models.Model):
             return tag
 
     def get_absolute_url(self):
-        '''tag的绝对路径'''
+        """tag的绝对路径"""
         return reverse('post_tag_list', args=[self.name])
+
 
 # 自定义文章的manager
 class PostPublishedManager(models.Manager):
     def get_queryset(self):
         return super(PostPublishedManager,self).get_queryset().filter(status='published',deleted=False)
+
 
 # 文章模型
 @python_2_unicode_compatible
@@ -137,7 +139,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        '''获取文章的绝对路径'''
+        """获取文章的绝对路径"""
         return reverse('article:post_detail', kwargs={'pk': self.pk})
 
     # model元数据
@@ -146,6 +148,7 @@ class Post(models.Model):
         ordering = ('-created',)
         verbose_name = "文章"
         verbose_name_plural = "文章列表"
+
 
 # 文章评论
 @python_2_unicode_compatible
@@ -172,6 +175,7 @@ class Comment(models.Model):
     def __str__(self):
         return "评论 {} ".format(self.content)
 
+
 @python_2_unicode_compatible
 class Upload(models.Model):
     user = models.ForeignKey(User, related_name='images', verbose_name="用户")
@@ -179,7 +183,6 @@ class Upload(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name="上传时间")
     qiniu_url = models.CharField(verbose_name="七牛Url", blank=True, max_length=200)
     deleted = models.BooleanField(default=False, verbose_name="删除")
-
 
     def __str__(self):
         return str(self.filename)

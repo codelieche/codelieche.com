@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding:utf-8 -*-
 from .models import Post
 from django import forms
 
