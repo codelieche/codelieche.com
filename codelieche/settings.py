@@ -60,7 +60,7 @@ ROOT_URLCONF = 'codelieche.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,9 +84,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DB_NAME', 'codelieche'),
         'USER': os.environ.get('MYSQL_USER', 'root'),
-        'PASSWORD':os.environ.get('MYSQL_PASSWORD', ''),
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
