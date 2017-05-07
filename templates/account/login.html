@@ -10,12 +10,24 @@
 <body>
 <div class="container">
     <div class="login">
-        <form action="{{ url }}" method="post">
+        <div class="logo">
+            <img src="{% static 'img/logo.svg' %}" alt="编程列车">
+        </div>
+        {% if msg %}
+            <div class="info">{{ msg }}</div>
+        {% endif %}
+
+        <form method="post">
            {{ form.as_p }}
             {% csrf_token %}
             <div class="button">
-                <input class="btn" type="reset" value="重置">
-                <input class="btn" type="submit" value="登陆">
+{#                <input class="btn" type="reset" value="重置">#}
+                <input class="btn" type="submit" value="登 陆">
+            </div>
+            <div class="reset-pwd">
+                <a href="">
+                    Reset password
+                </a>
             </div>
 
         </form>
