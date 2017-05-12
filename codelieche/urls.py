@@ -21,12 +21,13 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from account.views import page_403, page_404, page_500
-from article.views.article import index
+from article.views.article import IndexPageView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #文章首页
-    url(r'^$', index, name="index"),
+    url(r'^$', IndexPageView.as_view(), name="index"),
+    url(r'^page/(?P<page>\d+)/?$', IndexPageView.as_view(), name="page"),
     url(r'^article/', include('article.urls.article', namespace="article")),
     url(r'^category/', include('article.urls.category', namespace="category")),
     url(r'^user/', include('account.urls', namespace="user")),

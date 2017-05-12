@@ -4,6 +4,6 @@ from django.conf.urls import url
 from ..views import category
 
 urlpatterns = [
-    url(r'(?P<category_slug>[\w\d]+)', category.post_category_list,
-        name="list"),
+    # category list page
+    url(r'^(?P<slug>[\w\d]+)/(?P<page>\d+)?/?$', category.ArticleList.as_view(), name="list")
 ]

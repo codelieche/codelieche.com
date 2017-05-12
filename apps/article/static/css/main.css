@@ -337,6 +337,38 @@ ul {
         -webkit-box-orient: vertical; }
       .container .main .content .articles .item .item-info .summary {
         display: none; } }
+/* 列表 page 样式开始 */
+.content .page {
+  margin: 25px 0 auto;
+  overflow: hidden;
+  clear: both;
+  text-align: center;
+  padding-bottom: 20px; }
+  .content .page a {
+    margin: 0 8px;
+    color: #4d555d;
+    border-radius: 16px;
+    padding: 0 4px;
+    min-width: 24px;
+    line-height: 32px;
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
+    -webkit-transition: border-color .2s;
+    -moz-transition: border-color .2s;
+    transition: border-color .2s; }
+  .content .page .page-tag:hover {
+    background: #d9dde1;
+    color: #4d555d;
+    text-decoration: none; }
+  .content .page .page-tag.active {
+    background: #4d555d;
+    color: #fff; }
+  .content .page .page-disabled {
+    height: 32px;
+    color: #c8cdd2; }
+
+/* 列表 page 样式end */
 .container .main .content .article {
   background-color: #fff;
   padding: 10px 15px;

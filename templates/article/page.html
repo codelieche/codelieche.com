@@ -1,7 +1,7 @@
 {% extends "../base.html" %}
 {% load staticfiles %}
 {#{% load self_tags %}#}
-{% block title %}{% if category %}{{ category.title }}-{% endif %}编程列车{% endblock %}
+{% block title %}编程列车{% endblock %}
 
 {% block content %}
     <div class="articles">
@@ -34,28 +34,28 @@
         <!--Page列表开始-->
         <div class="page">
             {% if posts.has_previous %}
-                <a href="{% url 'category:list' category.slug 1 %}" >首页</a>
-                <a href="{% url 'category:list' category.slug posts.previous_page_number %}">上一页</a>
+                <a href="{% url 'index' %}" >首页</a>
+                <a href="{% url 'page' posts.previous_page_number %}">上一页</a>
             {% else %}
                  <a class="page-disabled">首页</a>
-                 <a class="page-disabled">下一页</a>
+                 <a class="page-disabled">上一页</a>
             {% endif %}
 
             {% for page in page_num_list %}
                 {% ifequal page posts.number %}
-                    <a class="page-tag active" href="{% url 'category:list' category.slug page %}">
+                    <a class="page-tag active" href="{% url 'page' page %}">
                         {{ page }}
                     </a>
                 {% else %}
-                    <a class="page-tag" href="{% url 'category:list' category.slug page %}">
+                    <a class="page-tag" href="{% url 'page' page %}">
                         {{ page }}
                     </a>
                 {% endifequal %}
             {% endfor %}
 
             {% if posts.has_next %}
-                    <a href="{% url 'category:list' category.slug posts.next_page_number %}" >下一页</a>
-                    <a href="{% url 'category:list' category.slug last_page %}" >尾页</a>
+                    <a href="{% url 'page' posts.next_page_number %}" >下一页</a>
+                    <a href="{% url 'page' last_page %}" >尾页</a>
             {% else %}
                  <a class="page-disabled">下一页</a>
                  <a class="page-disabled">尾页</a>

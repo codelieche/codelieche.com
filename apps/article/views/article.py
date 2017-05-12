@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import View
+from django.core.paginator import Paginator
 
 from account.models import UserData
 from utils.article import get_article_id
@@ -18,6 +20,35 @@ def index(request):
 
     posts = object_list
     return render(request, "article/list.html", {"posts":posts})
+
+
+class IndexPageView(View):
+    def get(self, request, page=0):
+
+        all_posts = Post.published.all()
+
+        if page:
+            page_num = int(page)
+        else:
+            page_num = 1
+
+        p = Paginator(all_posts, 10)
+        posts = p.page(page_num)
+        page_count = p.num_pages
+
+        if page_count <= 7:
+            page_num_list = range(1, p.num_pages + 1)
+        else:
+            start = 1 if (page_num - 3) < 1 else (page_num - 3)
+            end = page_count if (page_num + 3) > page_count else (page_num + 3)
+            page_num_list = range(start, end + 1)
+
+        content = {
+            'posts': posts,
+            'last_page': page_count,
+            'page_num_list': page_num_list
+        }
+        return render(request, 'article/page.html', content)
 
 
 def post_tag_list(request, tag_name):
