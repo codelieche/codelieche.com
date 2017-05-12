@@ -51,3 +51,15 @@ def user_logout(request):
     logout(request)
     next_url = request.GET.get('next', '/user/login')
     return HttpResponseRedirect(redirect_to=next_url)
+
+
+def page_403(request):
+    return render(request, '403.html')
+
+
+def page_404(request):
+    return render(request, '404.html')
+
+
+def page_500(request):
+    return render(request, '500.html')

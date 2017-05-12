@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="279px" height="156px" viewBox="0 0 279 156" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>403@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="错误页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPad-Pro-Landscape" transform="translate(-553.000000, -424.000000)" fill="#9B9B9B">
+            <g id="403" transform="translate(551.000000, 376.000000)">
+                <text id="您暂时无访问权限,请申请权限" font-family="PingFangSC-Thin, PingFang SC" font-size="20" font-weight="300" letter-spacing="1.11111116">
+                    <tspan x="2" y="201">您暂时无访问权限,请申请权限</tspan>
+                </text>
+                <text font-family="PingFangSC-Regular, PingFang SC" font-size="144" font-weight="normal" letter-spacing="8">
+                    <tspan x="0" y="153">403</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
