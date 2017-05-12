@@ -140,7 +140,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         """获取文章的绝对路径"""
-        return reverse('article:post_detail', kwargs={'pk': self.pk})
+        return reverse('article:detail', kwargs={'pk': self.pk})
 
     # model元数据
     class Meta:
