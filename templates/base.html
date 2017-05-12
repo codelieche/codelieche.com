@@ -18,7 +18,7 @@
                     <!--网站的logo-->
                     <div class="logo">
                         <a href="/" title="编程列车">
-                            <img src="{% static 'img/logo.svg' %}" >
+                            <img src="{% static 'images/logo.svg' %}" >
                         </a>
                         <a class="btn-nav" onclick="btnNavClick()">
                             <i class="icon-menu"></i>
@@ -29,7 +29,7 @@
                         <ul class="nav" id="nav">
                             {% if categories %}
                                 {% for category in categories %}
-                                    <li><a href="/category/{{ category.slug }}">{{ category.title }}</a></li>
+                                    <li><a href="{% url 'category:list' category.slug %}">{{ category.title }}</a></li>
                                 {% endfor %}
                             {% endif %}
                         </ul>
@@ -52,7 +52,7 @@
                             <ul class="tags">
                                 {% for tag in article_tags %}
                                 <li>
-                                    <a class="tag" href="/tags/{{ tag.slug }}">{{ tag.name }}</a>
+                                    <a class="tag" href="{% url 'article:tag_list' tag.slug %}">{{ tag.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>

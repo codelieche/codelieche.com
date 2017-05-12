@@ -8,8 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from account.models import UserData
 from utils.article import get_article_id
-from .forms import PostForm, ImageForm
-from .models import Category, Post, Tag, Upload
+from article.forms import PostForm, ImageForm
+from article.models import Category, Post, Tag, Upload
 # Create your views here.
 
 
@@ -18,16 +18,6 @@ def index(request):
 
     posts = object_list
     return render(request, "article/list.html", {"posts":posts})
-
-
-def post_category_list(request, category_slug):
-    # category = Category.objects.get(slug = category_slug)
-    category = get_object_or_404(Category, slug=category_slug)
-    posts = Post.published.filter(category=category)
-    if posts:
-        return render(request, "article/list.html", {"category": category, "posts": posts})
-    else:
-        return render(request, "article/list.html", {"category":category, "posts":[]})
 
 
 def post_tag_list(request, tag_name):
