@@ -6,7 +6,7 @@
         <ul class="article-list">
             {% for post in latest_posts %}
                 <li>
-                    <a href="/article/{{ post.pk }}">{{ post.title }}</a>
+                    <a href="{% url 'article:detail' post.pk %}">{{ post.title }}</a>
                 </li>
             {% endfor %}
         </ul>

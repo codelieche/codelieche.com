@@ -21,12 +21,16 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from account.views import page_403, page_404, page_500
+from article.views.article import index
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('article.urls')),
-    url(r'^user/', include('account.urls')),
-] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    #文章首页
+    url(r'^$', index, name="index"),
+    url(r'^article/', include('article.urls.article', namespace="article")),
+    url(r'^category/', include('article.urls.category', namespace="category")),
+    url(r'^user/', include('account.urls', namespace="user")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # 这里还要添加下/media/xxx.jpg文件的路由，生产环境的时候是用nginx来部署静态文件的。
 
 handler403 = page_403
