@@ -51,6 +51,43 @@ class IndexPageView(View):
         return render(request, 'article/page.html', content)
 
 
+class ArticleTagListView(View):
+    def get(self, request, tag_name, page=0):
+        # 先取出tag
+        tag = get_object_or_404(Tag, slug=tag_name)
+        # print(tag)
+        all_posts = tag.articles.all()
+        if page:
+            page_num = int(page)
+        else:
+            page_num = 1
+
+        # 分页
+        p = Paginator(all_posts, 10)
+        posts = p.page(page_num)
+        # 总共页数
+        page_count = p.num_pages
+
+        # 生成页列表
+        if page_num < 7:
+            page_num_list = range(1, p.num_pages + 1)
+        else:
+            start = 1 if (page_num - 3) < 1 else (page_num - 3)
+            end = page_count if (page_num + 3) > page_count else (page_num + 3)
+            page_num_list = range(start, end + 1)
+
+        # 渲染主体内容
+        content = {
+            'tag': tag,
+            'posts': posts,
+            'last_page': page_count,
+            'page_num_list': page_num_list
+        }
+
+        # posts = Post.published.filter(tags__name__in=[tag_name])
+        return render(request, "article/list_tag.html", content)
+
+
 def post_tag_list(request, tag_name):
     # object_list = Post.objects.filter(status="published")
     # posts = Post.published.filter(tags__in = ['python'])
