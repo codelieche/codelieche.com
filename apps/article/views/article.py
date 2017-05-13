@@ -15,17 +15,13 @@ from article.models import Category, Post, Tag, Upload
 # Create your views here.
 
 
-def index(request):
-    object_list = Post.published.all()
-
-    posts = object_list
-    return render(request, "article/list.html", {"posts":posts})
-
-
 class IndexPageView(View):
     def get(self, request, page=0):
-
-        all_posts = Post.published.all()
+        # 超级用户才可以查看所有文章
+        if request.user.is_superuser:
+            all_posts = Post.objects.all()
+        else:
+            all_posts = Post.published.all()
 
         if page:
             page_num = int(page)
@@ -56,7 +52,11 @@ class ArticleTagListView(View):
         # 先取出tag
         tag = get_object_or_404(Tag, slug=tag_name)
         # print(tag)
-        all_posts = tag.articles.all()
+        # 超级用户才可以查看所有文章
+        if request.user.is_superuser:
+            all_posts = tag.articles.all()
+        else:
+            all_posts = tag.articles.all().filter(status='published')
         if page:
             page_num = int(page)
         else:
@@ -107,7 +107,7 @@ class PostDetailView(View):
             if post.status == 'draft':
                 pre_title = "【草稿】"
                 post.title = pre_title + post.title
-            elif post.delete:
+            elif post.deleted:
                 pre_title = "【删除】"
                 post.title = pre_title + post.title
         else:

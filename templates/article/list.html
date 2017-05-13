@@ -10,7 +10,9 @@
                 <div class="item-info">
                     <div>
                         <a href="{% url 'article:detail' post.pk %}">
-                            <h2 class="title">{{ post.title }}</h2>
+                            <h2 class="title">
+                                {% if post.deleted %}【删除】{% endif %}{% ifequal post.status 'draft' %}【草稿】{% endifequal %}{{ post.title }}
+                            </h2>
                         </a>
                     </div>
 
