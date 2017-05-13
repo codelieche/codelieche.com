@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^tag/(?P<tag_name>[\w\d\-]+)/(?P<page>\d+)?/?',
         article.ArticleTagListView.as_view(), name="tag_list"),
     # 文章详情页
-    url(r'^(?P<pk>\d+)$', article.post_detail, name="detail"),
+    url(r'^(?P<pk>\d+)$', article.PostDetailView.as_view(), name="detail"),
     # 创建文章
     url(r"create$", article.create, name="create"),
     # 创建文章保存
