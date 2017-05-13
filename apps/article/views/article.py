@@ -36,7 +36,7 @@ class IndexPageView(View):
             page_num_list = range(1, p.num_pages + 1)
         else:
             start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (page_num + 3) > page_count else (page_num + 3)
+            end = page_count if (start + 6) > page_count else (start + 6)
             page_num_list = range(start, end + 1)
 
         content = {
@@ -73,7 +73,7 @@ class ArticleTagListView(View):
             page_num_list = range(1, p.num_pages + 1)
         else:
             start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (page_num + 3) > page_count else (page_num + 3)
+            end = page_count if (start + 6) > page_count else (start + 6)
             page_num_list = range(start, end + 1)
 
         # 渲染主体内容
