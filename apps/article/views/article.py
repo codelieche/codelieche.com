@@ -3,7 +3,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from django.core.paginator import Paginator
@@ -282,12 +282,14 @@ def upload_image(request):
         # print(dir(request.FILES['filename']))
         # print(file.size)
         if form.is_valid():
-            image = Upload(filename=form.cleaned_data['filename'], user=request.user)
+            image = Upload(filename=form.cleaned_data['filename'],
+                           user=request.user)
             image.save()
-            response_data = {}
-            response_data['sucess'] = 'true'
-            response_data['url'] = '/media/%s' % image
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-        return HttpResponse(json.dumps({'sucess':False}),
-                            content_type="application/json", status=400)
+            response_data = {
+                'success': 'true',
+                'url': '/media/%s' % image,
+            }
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({'success': 'false'}, status=400)
     return render(request, "article/upload_image.html", {'form': form})
