@@ -5,5 +5,6 @@ from ..views import category
 
 urlpatterns = [
     # category list page
-    url(r'^(?P<slug>[\w\d]+)/(?P<page>\d+)?/?$', category.ArticleList.as_view(), name="list")
+    url(r'^(?P<slug>[\w\d]+)/(?P<page>\d+)?/?$',
+        category.ArticleListView.as_view(), name="list")
 ]

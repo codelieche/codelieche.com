@@ -248,8 +248,10 @@ ul {
           display: block;
           width: 100%;
           box-sizing: border-box; }
-      .container .main .sidebar {
-        display: none; }
+        .container .main .content .articles .page-tag {
+          display: none; }
+    .container .sidebar {
+      display: none; }
 
   .footer {
     display: none; } }

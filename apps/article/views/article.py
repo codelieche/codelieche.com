@@ -3,7 +3,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from django.core.paginator import Paginator
@@ -15,17 +15,13 @@ from article.models import Category, Post, Tag, Upload
 # Create your views here.
 
 
-def index(request):
-    object_list = Post.published.all()
-
-    posts = object_list
-    return render(request, "article/list.html", {"posts":posts})
-
-
 class IndexPageView(View):
     def get(self, request, page=0):
-
-        all_posts = Post.published.all()
+        # 超级用户才可以查看所有文章
+        if request.user.is_superuser:
+            all_posts = Post.objects.all()
+        else:
+            all_posts = Post.published.all()
 
         if page:
             page_num = int(page)
@@ -40,7 +36,7 @@ class IndexPageView(View):
             page_num_list = range(1, p.num_pages + 1)
         else:
             start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (page_num + 3) > page_count else (page_num + 3)
+            end = page_count if (start + 6) > page_count else (start + 6)
             page_num_list = range(start, end + 1)
 
         content = {
@@ -51,52 +47,73 @@ class IndexPageView(View):
         return render(request, 'article/page.html', content)
 
 
-def post_tag_list(request, tag_name):
-    # object_list = Post.objects.filter(status="published")
-    # posts = Post.published.filter(tags__in = ['python'])
+class ArticleTagListView(View):
+    def get(self, request, tag_name, page=0):
+        # 先取出tag
+        tag = get_object_or_404(Tag, slug=tag_name)
+        # print(tag)
+        # 超级用户才可以查看所有文章
+        if request.user.is_superuser:
+            all_posts = tag.articles.all()
+        else:
+            all_posts = tag.articles.all().filter(status='published')
+        if page:
+            page_num = int(page)
+        else:
+            page_num = 1
 
-    # tag = Tag.objects.get(slug=tag_slug)
-    # 有时候会是错误的slug，故用get_object_or_404
-    # print(tag_name)
-    tag = get_object_or_404(Tag, slug=tag_name)
-    # print(tag)
-    posts = tag.articles.all()
-    # print(posts)
-    # print(posts_id.all())
+        # 分页
+        p = Paginator(all_posts, 10)
+        posts = p.page(page_num)
+        # 总共页数
+        page_count = p.num_pages
 
-    # posts = Post.published.filter(tags__name__in=[tag_name])
-    return render(request, "article/list_tag.html", {"tag":tag, "posts":posts})
+        # 生成页列表
+        if page_num < 7:
+            page_num_list = range(1, p.num_pages + 1)
+        else:
+            start = 1 if (page_num - 3) < 1 else (page_num - 3)
+            end = page_count if (start + 6) > page_count else (start + 6)
+            page_num_list = range(start, end + 1)
+
+        # 渲染主体内容
+        content = {
+            'tag': tag,
+            'posts': posts,
+            'last_page': page_count,
+            'page_num_list': page_num_list
+        }
+
+        # posts = Post.published.filter(tags__name__in=[tag_name])
+        return render(request, "article/list_tag.html", content)
 
 
-def post_detail(request, pk):
+class PostDetailView(View):
     """
-    :param request:
-    :param pk: 文章的ID号，主键号
-    :return:
+    文章详情页View
     每次访问都需要增加以下阅读量，visit_count
     更新阅读量的时候，要传递update_fields=['visit_count']
     默认Model.save方法的参数update_fields=None,不传值，同时会修改掉updated字段的数据
     """
-    try:
-        post = Post.published.get(pk=pk)
+    def get(self, request, pk):
+        # 根据pk获取到文章
+        post = get_object_or_404(Post, pk=pk)
+        # 阅读次数+1
         post.visit_count += 1
         post.save(update_fields=['visit_count'])
-        return render(request, "article/detail.html", {"post":post})
-    except Exception as e:
-        # 这个情况可能是帖子删除了，也可能是帖子状态是草稿，再次获取一次
-        try:
-            post = Post.objects.get(pk=pk)
-            # 如果是作者自己访问，那么文章就可以查看
-            if post.author == request.user:
+
+        # 根据状态判断是草稿还是已发布
+        if post.author == request.user:
+            if post.status == 'draft':
                 pre_title = "【草稿】"
-                if post.deleted: pre_title = "【删除】"
                 post.title = pre_title + post.title
-                return render(request, "article/detail.html", {"post": post})
-            else:
-                return HttpResponse(status=404)
-        except Exception as e:
-            # print(e) #Post matching query does not exist.
-            return HttpResponse(status=404)
+            elif post.deleted:
+                pre_title = "【删除】"
+                post.title = pre_title + post.title
+        else:
+            if post.status == 'draft' or post.delete:
+                raise Http404
+        return render(request, 'article/detail.html', {"post": post})
 
 
 @login_required(login_url="/user/login")
@@ -109,7 +126,7 @@ def create(request):
     except ObjectDoesNotExist:
         # article的数据还不存在，那么就创建一个吧
         ud = UserData(user=request.user, type="article", content="")
-    #ud.content中的false,true没有加双引号的，所以这里定义一下，false，true
+    # ud.content中的false,true没有加双引号的，所以这里定义一下，false，true
     false = False
     true = True
     if ud.content:
@@ -207,11 +224,11 @@ def editor(request, pk=None):
             post.deleted = deleted
             # print(post.tags.all())
             post.save()
-            if tags:#如果有值则添加tag
+            if tags:  # 如果有值则添加tag
                 for tag in tags.split(','):
                     if not tag: continue  # 如果tag为空就跳过一下
                     # get_or_create是Tag的静态方法
-                    tag = Tag.get_or_create(name=tag.strip())#必须加strip，去除首位空格
+                    tag = Tag.get_or_create(name=tag.strip())  # 必须加strip，去除首位空格
                     post.tags.add(tag)
             if deleted:
                 return HttpResponseRedirect("/")
@@ -219,7 +236,7 @@ def editor(request, pk=None):
         return redirect(post)
     else:
         form = PostForm()
-    return render(request, "article/editor.html", {"post":post, "categories":categories})
+    return render(request, "article/editor.html", {"post": post, "categories": categories})
 
 
 @login_required(login_url="/user/login")
@@ -265,12 +282,14 @@ def upload_image(request):
         # print(dir(request.FILES['filename']))
         # print(file.size)
         if form.is_valid():
-            image = Upload(filename=form.cleaned_data['filename'], user=request.user)
+            image = Upload(filename=form.cleaned_data['filename'],
+                           user=request.user)
             image.save()
-            response_data = {}
-            response_data['sucess'] = 'true'
-            response_data['url'] = '/media/%s' % image
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-        return HttpResponse(json.dumps({'sucess':False}),
-                            content_type="application/json", status=400)
+            response_data = {
+                'success': 'true',
+                'url': '/media/%s' % image,
+            }
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({'success': 'false'}, status=400)
     return render(request, "article/upload_image.html", {'form': form})

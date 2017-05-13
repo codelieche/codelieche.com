@@ -9,7 +9,9 @@
                 <div class="item-info">
                     <div>
                         <a href="{% url 'article:detail' post.pk  %}">
-                            <h2 class="title">{{ post.title }}</h2>
+                            <h2 class="title">
+                                {% if post.deleted %}【删除】{% endif %}{% ifequal post.status 'draft' %}【草稿】{% endifequal %}{{ post.title }}
+                            </h2>
                         </a>
                     </div>
 
@@ -20,7 +22,7 @@
                                 <ul class="taglist">
                                     {% for tag in post.tags.all %}
                                         <li>
-                                             <a href="/tags/{{ tag.slug }}">{{ tag.name }}</a>
+                                             <a href="{% url 'article:tag_list' tag.slug %}">{{ tag.name }}</a>
                                         </li>
                                 {% endfor %}
                                 </ul>
@@ -30,6 +32,37 @@
                 </div>
             </div>
         {% endfor %}
+        <!--Page列表开始-->
+        <div class="page">
+            {% if posts.has_previous %}
+                <a href="{% url 'article:tag_list' tag.slug %}" >首页</a>
+                <a href="{% url 'article:tag_list' tag.slug posts.previous_page_number %}">上一页</a>
+            {% else %}
+                 <a class="page-disabled">首页</a>
+                 <a class="page-disabled">下一页</a>
+            {% endif %}
+
+            {% for page in page_num_list %}
+                {% ifequal page posts.number %}
+                    <a class="page-tag active" href="{% url 'article:tag_list' tag.slug page %}">
+                        {{ page }}
+                    </a>
+                {% else %}
+                    <a class="page-tag" href="{% url 'article:tag_list' tag.slug page %}">
+                        {{ page }}
+                    </a>
+                {% endifequal %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+                    <a href="{% url 'article:tag_list' tag.slug posts.next_page_number %}" >下一页</a>
+                    <a href="{% url 'article:tag_list' tag.slug last_page %}" >尾页</a>
+            {% else %}
+                 <a class="page-disabled">下一页</a>
+                 <a class="page-disabled">尾页</a>
+            {% endif %}
+        </div>
+        <!--Page列表end-->
     </div>
 
 

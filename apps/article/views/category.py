@@ -6,14 +6,16 @@ from django.core.paginator import Paginator
 from article.models import Category, Post
 
 
-class ArticleList(View):
+class ArticleListView(View):
     def get(self, request, slug, page=None):
 
         category = get_object_or_404(Category, slug=slug)
-        if category:
-            all_posts = Post.published.filter(category=category)
+        # 超级用户才可以查看所有文章
+        if request.user.is_superuser:
+            all_posts = Post.objects.all().filter(category=category)
         else:
-            all_posts = Post.published.all()
+            all_posts = Post.published.filter(category=category)
+
         if page:
             page_num = int(page)
         else:
@@ -27,7 +29,7 @@ class ArticleList(View):
             page_num_list = range(1, p.num_pages + 1)
         else:
             start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (page_num + 3) > page_count else (page_num + 3)
+            end = page_count if (start + 6) > page_count else (start + 6)
             page_num_list = range(start, end + 1)
 
         content = {

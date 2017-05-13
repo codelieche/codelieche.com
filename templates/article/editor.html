@@ -57,8 +57,8 @@
             <p>
                 <label for="id_status">状态：</label>
                 <select name="status" id="id_status">
-                    <option value="published" selected="selected">发布</option>
-                    <option value="draft" >草稿</option>
+                    <option value="published" {% if post.status == 'published' %}selected="selected"{% endif %}>发布</option>
+                    <option value="draft" {% if post.status == 'draft' %}selected="selected"{% endif %}>草稿</option>
                 </select>
                 <label for="id_tags">标签：</label>
                 <input type="text" name="tags" id="id_tags" value="{% for tag in post.tags.all %}{% if forloop.last %} {{ tag.name }}{% else %} {{ tag.name }},{% endif %}{% endfor %}">
@@ -67,7 +67,7 @@
                 <label for="id_top">置顶</label>
                 <input type="checkbox" name="good" id="id_good" {% if post.good %}  checked="checked" {% endif %}>
                 <label for="id_good">精华</label>
-                <input type="checkbox" name="deleted" id="id_deleted" {% if post.deleted %}  checked="checked" {% endif %}>
+                <input type="checkbox" name="deleted" id="id_deleted" {% if post.deleted %} checked="checked" {% endif %}>
                 <label for="id_deleted" >删除</label>
                 <input id="old_content" value="{{ post.content }}" type="hidden">
             </p>
