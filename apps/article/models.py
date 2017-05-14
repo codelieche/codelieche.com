@@ -28,6 +28,7 @@ class Category(models.Model):
 # 创建标签类
 @python_2_unicode_compatible
 class Tag(models.Model):
+    """文章标签Model"""
     slug = models.SlugField(max_length=15, verbose_name="网址", blank=True)
     name = models.CharField(max_length=30, verbose_name="名称")
     hot = models.BooleanField(default=False, verbose_name="热门")
@@ -40,7 +41,7 @@ class Tag(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        '''自动创建标签，slug设置为一个数字'''
+        """自动创建标签，slug设置为一个数字"""
         if not self.slug:
             self.slug = Tag.objects.count()
         super(Tag, self).save(*args, **kwargs)
@@ -178,8 +179,12 @@ class Comment(models.Model):
 
 @python_2_unicode_compatible
 class Upload(models.Model):
+    """
+    上传图片Model
+    """
     user = models.ForeignKey(User, related_name='images', verbose_name="用户")
-    filename = models.ImageField(upload_to="img/%Y/%m", storage=ImageStorage(), verbose_name="图片")
+    filename = models.ImageField(upload_to="img/%Y/%m", storage=ImageStorage(),
+                                 verbose_name="图片")
     created = models.DateTimeField(auto_now_add=True, verbose_name="上传时间")
     qiniu_url = models.CharField(verbose_name="七牛Url", blank=True, max_length=200)
     deleted = models.BooleanField(default=False, verbose_name="删除")
@@ -190,8 +195,3 @@ class Upload(models.Model):
     class Meta:
         verbose_name = "上传的图片"
         verbose_name_plural = "上传的图片列表"
-
-
-
-
-

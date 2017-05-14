@@ -16,6 +16,9 @@ from article.models import Category, Post, Tag, Upload
 
 
 class IndexPageView(View):
+    """
+    文章首页PageView
+    """
     def get(self, request, page=0):
         # 超级用户才可以查看所有文章
         if request.user.is_superuser:
@@ -50,6 +53,9 @@ class IndexPageView(View):
 
 
 class ArticleTagListView(View):
+    """
+    标签文章列表页View
+    """
     def get(self, request, tag_name, page=0):
         # 先取出tag
         tag = get_object_or_404(Tag, slug=tag_name)
@@ -122,6 +128,11 @@ class PostDetailView(View):
 
 @login_required(login_url="/user/login")
 def create(request):
+    """
+    创建文章
+    :param request:
+    :return:
+    """
     ud = None
     # 从UserData中获取type为article的数据
     try:
@@ -148,22 +159,21 @@ def create(request):
         # 获取了提交过来的form数据后 验证是否正确，以及获取cleaned_data
         # print(form)
         if form.is_valid():
-            form = form.cleaned_data
-            category = Category.objects.get(pk=form['category'])
-            title = form['title']
-            content = form['content']
-            status = form['status']
-            tags = form['tags']
+            category = Category.objects.get(pk=form.cleaned_data['category'])
+            title = form.cleaned_data['title']
+            content = form.cleaned_data['content']
+            status = form.cleaned_data['status']
+            tags = form.cleaned_data['tags']
             if tags.find('，') > 0:
                 tags = tags.replace("，", ",")
-            top = form['top']
-            good = form['good']
-            deleted = form['deleted']
-            created = form['created']
+            top = form.cleaned_data['top']
+            good = form.cleaned_data['good']
+            deleted = form.cleaned_data['deleted']
+            created = form.cleaned_data['created']
             post_pk = get_article_id(created)
             # print(category,title,content,status,tags)
-            post = Post(pk=post_pk, category=category, title=title, content=content,
-                        status=status, author=request.user,
+            post = Post(pk=post_pk, category=category, title=title,
+                        content=content, status=status, author=request.user,
                         top=top, good=good, deleted=deleted)
 
             # print(post.tags)
@@ -173,11 +183,15 @@ def create(request):
             # 文章保存后，要对 UserData中的article的内容清空
             ud.content = ""
             ud.save()
-            if tags:#如果有值则添加tag
+            # 如果有值则添加tag
+            if tags:
                 for tag in tags.split(','):
-                    if not tag: continue #如果tag为空就跳过一下
+                    if not tag:
+                        # 如果tag为空就跳过一下
+                        continue
                     # get_or_create是Tag的静态方法
-                    tag = Tag.get_or_create(name=tag.strip())  # 必须加strip，去除首位空格
+                    #  必须加strip，去除首位空格
+                    tag = Tag.get_or_create(name=tag.strip())
                     post.tags.add(tag)
             if post.deleted:
                 return HttpResponseRedirect(redirect_to="/")
@@ -194,7 +208,7 @@ def create(request):
 
 @login_required(login_url="/user/login")
 def editor(request, pk=None):
-    '''文章编辑view'''
+    """文章编辑view"""
     categories = Category.objects.all()
     # 得到 编辑的文章对象
     post = Post.objects.get(pk=pk)
@@ -245,12 +259,12 @@ def editor(request, pk=None):
 
 @login_required(login_url="/user/login")
 def save(request):
-    '''创建文章中途保存'''
+    """创建文章中途保存"""
     # 从UserData中获取type为article的数据
-    try:
-        # ud = UserData.objects.get(type="article",user=request.user)
-        ud = request.user.userdatas.get(type="article")
-    except ObjectDoesNotExist:
+    ud = UserData.objects.filter(type="article",
+                                 user=request.user).first()
+    # ud = request.user.userdatas.get(type="article")
+    if not ud:
         # article的数据还不存在，那么就创建一个吧
         ud = UserData()
     post = Post()
@@ -267,17 +281,18 @@ def save(request):
             # print(form)
             ud.user = request.user
             ud.save()
-            return HttpResponse(json.dumps({"sucess":True}), content_type="application/json")
+            return HttpResponse(json.dumps({"sucess": True}),
+                                content_type="application/json")
         return HttpResponse(json.dumps({"sucess": False}),
                             content_type="application/json")
     else:
         # /article/save 只能是POST访问
-        return HttpResponse(status=404)
+        raise Http404
 
 
 @login_required(login_url="/user/login")
 def upload_image(request):
-    '''上传图片'''
+    """上传图片"""
     if request.method == "GET":
         form = ImageForm()
     else:

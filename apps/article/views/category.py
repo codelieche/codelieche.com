@@ -7,6 +7,9 @@ from article.models import Category, Post
 
 
 class ArticleListView(View):
+    """
+    分类文章列表View
+    """
     def get(self, request, slug, page=None):
 
         category = get_object_or_404(Category, slug=slug)
