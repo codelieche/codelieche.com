@@ -121,7 +121,8 @@ class PostDetailView(View):
                 pre_title = "【删除】"
                 post.title = pre_title + post.title
         else:
-            if post.status == 'draft' or post.delete:
+            if post.status == 'draft' or post.deleted:
+                # 如果post的状态是草稿，或者文章已经删除，就抛出404
                 raise Http404
         return render(request, 'article/detail.html', {"post": post})
 
