@@ -71,15 +71,8 @@ class ArticleTagListView(View):
         # 总共页数
         page_count = p.num_pages
 
-        # 生成页列表
-        if page_num < 7:
-            page_num_list = range(1, p.num_pages + 1)
-        else:
-            start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (start + 6) > page_count else (start + 6)
-            if end == page_count:
-                start = end - 6 if (end-6) > 1 else 1
-            page_num_list = range(start, end + 1)
+        # 获取分页器的页码列表，得到当前页面最近的7个页码列表
+        page_num_list = get_page_num_list(page_count, page_num, 7)
 
         # 渲染主体内容
         content = {
