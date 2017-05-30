@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 
 from account.models import UserData
 from utils.article import get_article_id
+from utils.paginator import get_page_num_list
 from article.forms import PostForm, ImageForm
 from article.models import Category, Post, Tag, Upload
 # Create your views here.
@@ -19,7 +20,7 @@ class IndexPageView(View):
     """
     文章首页PageView
     """
-    def get(self, request, page=0):
+    def get(self, request, page=None):
         # 超级用户才可以查看所有文章
         if request.user.is_superuser:
             all_posts = Post.objects.all()
@@ -35,14 +36,8 @@ class IndexPageView(View):
         posts = p.page(page_num)
         page_count = p.num_pages
 
-        if page_count <= 7:
-            page_num_list = range(1, p.num_pages + 1)
-        else:
-            start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (start + 6) > page_count else (start + 6)
-            if end == page_count:
-                start = end - 6 if (end-6) > 1 else 1
-            page_num_list = range(start, end + 1)
+        # 获取分页器的页码列表，得到当前页面最近的7个页码列表
+        page_num_list = get_page_num_list(page_count, page_num, 7)
 
         content = {
             'posts': posts,
@@ -76,15 +71,8 @@ class ArticleTagListView(View):
         # 总共页数
         page_count = p.num_pages
 
-        # 生成页列表
-        if page_num < 7:
-            page_num_list = range(1, p.num_pages + 1)
-        else:
-            start = 1 if (page_num - 3) < 1 else (page_num - 3)
-            end = page_count if (start + 6) > page_count else (start + 6)
-            if end == page_count:
-                start = end - 6 if (end-6) > 1 else 1
-            page_num_list = range(start, end + 1)
+        # 获取分页器的页码列表，得到当前页面最近的7个页码列表
+        page_num_list = get_page_num_list(page_count, page_num, 7)
 
         # 渲染主体内容
         content = {
