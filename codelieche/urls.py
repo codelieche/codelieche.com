@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^article/', include('article.urls.article', namespace="article")),
     url(r'^category/', include('article.urls.category', namespace="category")),
     url(r'^user/', include('account.urls', namespace="user")),
+    # api相关的url
+    url(r'^api/1.0/', include('codelieche.api_urls', namespace='api')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # 这里还要添加下/media/xxx.jpg文件的路由，生产环境的时候是用nginx来部署静态文件的。
 
