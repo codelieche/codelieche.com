@@ -1,10 +1,9 @@
 # -*- coding:utf-8 -*-
-from .models import Post
 from django import forms
 
 
 class PostForm(forms.Form):
-    '''发布文章表单'''
+    """发布文章表单"""
     category = forms.IntegerField(widget=forms.Select, label="分类")
     title = forms.CharField(label="标题", max_length=200)
     content = forms.CharField(label="文章内容", widget=forms.Textarea)
@@ -15,8 +14,9 @@ class PostForm(forms.Form):
     good = forms.BooleanField(widget=forms.CheckboxInput, label="精华", required=False)
     deleted = forms.BooleanField(widget=forms.CheckboxInput, label="删除", required=False)
 
+
 class ImageForm(forms.Form):
-    '''图片上传表单'''
+    """图片上传表单"""
     filename = forms.ImageField(label="上传图片")
 
 
