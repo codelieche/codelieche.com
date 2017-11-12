@@ -26,7 +26,6 @@ class IndexPageView(View):
             all_posts = Post.objects.all()
         else:
             all_posts = Post.published.all()
-
         if page:
             page_num = int(page)
         else:
@@ -230,13 +229,19 @@ def editor(request, pk=None):
             post.good = good
             post.deleted = deleted
             # print(post.tags.all())
-            post.save()
+            tags_list = []
             if tags:  # 如果有值则添加tag
                 for tag in tags.split(','):
-                    if not tag: continue  # 如果tag为空就跳过一下
-                    # get_or_create是Tag的静态方法
-                    tag = Tag.get_or_create(name=tag.strip())  # 必须加strip，去除首位空格
-                    post.tags.add(tag)
+                    if tag:
+                        # get_or_create是Tag的静态方法
+                        tag = Tag.get_or_create(name=tag.strip())  # 必须加strip，去除首位空格
+                        tags_list.append(tag)
+                    else:
+                        continue
+            # 对post的tags重新赋值
+            post.tags = tags_list
+            post.save()
+
             if deleted:
                 return HttpResponseRedirect("/")
         # return HttpResponseRedirect(redirect_to="/article/%s" % post.pk)

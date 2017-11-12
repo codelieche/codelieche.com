@@ -7,13 +7,14 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 from utils.storage import ImageStorage
-
-
 # Create your models here.
 
-# 文章分类
+
 @python_2_unicode_compatible
 class Category(models.Model):
+    """
+    文章分类
+    """
     slug = models.SlugField(max_length=10, verbose_name="分类网址", unique=True)
     title = models.CharField(max_length=40, verbose_name="分类名称", unique=True)
 
@@ -25,7 +26,6 @@ class Category(models.Model):
         verbose_name_plural = "分类列表"
 
 
-# 创建标签类
 @python_2_unicode_compatible
 class Tag(models.Model):
     """文章标签Model"""
@@ -63,16 +63,16 @@ class Tag(models.Model):
         return reverse('post_tag_list', args=[self.name])
 
 
-# 自定义文章的manager
 class PostPublishedManager(models.Manager):
+    """自定义文章的manager"""
     def get_queryset(self):
         return super(PostPublishedManager,self).get_queryset().filter(status='published',deleted=False)
 
 
-# 文章模型
 @python_2_unicode_compatible
 class Post(models.Model):
     """
+    文章模型
     文章有两种状态：published(发布),draft(草稿)
     title(标题),content(内容),author(作者),category(分类),created(创建时间),updated(更新时间)
     top(置顶),good(精华),deleted(删除)
@@ -151,9 +151,11 @@ class Post(models.Model):
         verbose_name_plural = "文章列表"
 
 
-# 文章评论
 @python_2_unicode_compatible
 class Comment(models.Model):
+    """
+    文章评论
+    """
     # user = models.ForeignKey(User,related_name='comments',verbose_name="用户")
     # 是哪条文章的评论
     post = models.ForeignKey(Post, related_name="comments", verbose_name="文章")
