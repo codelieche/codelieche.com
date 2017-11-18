@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 from article.views.article import IndexPageView
 from account.views.httperror import page_403, page_404, page_500
@@ -30,7 +32,8 @@ urlpatterns = [
     url(r'^page/(?P<page>\d+)/?$', IndexPageView.as_view(), name="page"),
     url(r'^article/', include('article.urls.article', namespace="article")),
     url(r'^category/', include('article.urls.category', namespace="category")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# 这里还要添加下/media/xxx.jpg文件的路由，生产环境的时间是用nginx来部署静态文件的
 
 # 错误页面
 handler403 = page_403
