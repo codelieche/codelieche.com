@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+
+from article.views.article import IndexPageView
 from account.views.httperror import page_403, page_404, page_500
 
 # from account.views import
@@ -23,6 +25,11 @@ from account.views.httperror import page_403, page_404, page_500
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include('account.urls', namespace='account')),
+    #文章首页
+    url(r'^$', IndexPageView.as_view(), name="index"),
+    url(r'^page/(?P<page>\d+)/?$', IndexPageView.as_view(), name="page"),
+    url(r'^article/', include('article.urls.article', namespace="article")),
+    url(r'^category/', include('article.urls.category', namespace="category")),
 ]
 
 # 错误页面

@@ -29,7 +29,7 @@
                         <ul class="nav" id="nav">
                             {% if categories %}
                                 {% for category in categories %}
-                                    <li><a href="{% url 'category:list' category.slug %}">{{ category.title }}</a></li>
+                                    <li><a href="{% url 'category:list' category.slug %}">{{ category.name }}</a></li>
                                 {% endfor %}
                             {% endif %}
                         </ul>

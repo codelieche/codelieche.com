@@ -12,7 +12,7 @@ from account.models import UserData
 from utils.article import get_article_id
 from utils.paginator import get_page_num_list
 from article.forms import PostForm, ImageForm
-from article.models import Category, Post, Tag, Upload
+from article.models import Category, Post, Tag, Image
 # Create your views here.
 
 
@@ -295,7 +295,7 @@ def upload_image(request):
         # print(dir(request.FILES['filename']))
         # print(file.size)
         if form.is_valid():
-            image = Upload(filename=form.cleaned_data['filename'],
+            image = Image(filename=form.cleaned_data['filename'],
                            user=request.user)
             image.save()
             response_data = {
