@@ -25,7 +25,7 @@
                         </a>
                     </div>
                     <!--网站文章目录导航-->
-                    {% get_all_article_categories as categories %}
+                    {% get_top_article_categories as categories %}
                         <ul class="nav" id="nav">
                             {% if categories %}
                                 {% for category in categories %}

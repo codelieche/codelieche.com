@@ -23,8 +23,17 @@ def markdown(value):
     extras_flags = ['tables', 'cuddled-lists', 'footnotes', 'code-friendly',
                     'fenced-code-blocks', 'tag-friendly', 'pyshell', 'markdown-in-html']
     # html = markdown2.markdown(text=value, extras= extras_flags)
-    html = mark_safe(markdown2.markdown(text=value, extras= extras_flags))
+    html = mark_safe(markdown2.markdown(text=value, extras=extras_flags))
     return html
+
+
+@register.assignment_tag()
+def get_top_article_categories():
+    """
+    获取顶级文章分类列表
+    自定义模版标签
+    """
+    return Category.objects.filter(level=1)
 
 
 @register.assignment_tag()
