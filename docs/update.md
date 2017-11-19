@@ -34,5 +34,14 @@ SELECT id,title,content,created,updated,status,top,good,deleted,visit_count,repl
 ```
 
 
+### 遇到的问题
 
+#### 1. 在admin中post列表页报错
+> ValueError: Database returned an invalid datetime value. Are time zone definitions for your database installed?
+
+**解决方式：**
+
+```shell
+ mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -uroot -p123456 -Dmysql
+ ```
 
