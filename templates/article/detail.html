@@ -9,7 +9,7 @@
             {{ post.title }}
         </h2>
         <div class="meta">
-            <span>发表于 {{ post.created }}</span>
+            <span>发表于 {{ post.time_added }}</span>
             <span>阅读：{{ post.visit_count }}</span>
             {% if post.tags.count %}
                 <span style="margin-right:0px;">标签:</span>

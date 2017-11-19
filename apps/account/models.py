@@ -15,7 +15,7 @@ class UserData(models.Model):
         ('article', "临时文章"),
         ('comment', '临时评论')
     )
-    user = models.ForeignKey("User", related_name="userdatas")
+    user = models.ForeignKey("UserProfile", related_name="userdatas")
     type = models.CharField(verbose_name="类型", max_length=20, choices=TYPE_CHOICE)
     content = models.TextField(verbose_name="信息内容")
     time_updated = models.DateTimeField(auto_now=True, verbose_name="更新时间")
@@ -25,7 +25,7 @@ class UserData(models.Model):
 
 
 @python_2_unicode_compatible
-class User(AbstractUser):
+class UserProfile(AbstractUser):
     """
     自定义的用户Model
     拓展了gender, nike_name, mobile字段

@@ -44,7 +44,7 @@
                                     selected="selected"
                                 {% endif %}
                         >
-                            {{ category.title }}
+                            {{ category.name }}
                         </option>
                     {% endfor %}
                 </select>
@@ -63,9 +63,9 @@
                 <label for="id_tags">标签：</label>
                 <input type="text" name="tags" id="id_tags" value="{% for tag in post.tags.all %}{% if forloop.last %} {{ tag.name }}{% else %} {{ tag.name }},{% endif %}{% endfor %}">
 
-                <input type="checkbox" name="top" id="id_top" {% if post.top %}  checked="checked" {% endif %}>
+                <input type="checkbox" name="is_top" id="id_top" {% if post.is_top %}  checked="checked" {% endif %}>
                 <label for="id_top">置顶</label>
-                <input type="checkbox" name="good" id="id_good" {% if post.good %}  checked="checked" {% endif %}>
+                <input type="checkbox" name="is_good" id="id_good" {% if post.is_good %}  checked="checked" {% endif %}>
                 <label for="id_good">精华</label>
                 <input type="checkbox" name="deleted" id="id_deleted" {% if post.deleted %} checked="checked" {% endif %}>
                 <label for="id_deleted" >删除</label>

@@ -1,22 +1,22 @@
 # -*- coding:utf-8 -*-
-import os
 from fabric.api import env, run
 from fabric.context_managers import cd
 
-from deploy_jobs import _create_directory_structure_if_necessary
-from deploy_jobs import _get_latest_source
-from deploy_jobs import _update_settings
-from deploy_jobs import _update_virtualenv
-from deploy_jobs import _update_static_files
-from deploy_jobs import _update_database
-from deploy_jobs import _inpute_value
+from .deploy_jobs import _create_directory_structure_if_necessary
+from .deploy_jobs import _get_latest_source
+from .deploy_jobs import _update_settings
+from .deploy_jobs import _update_virtualenv
+from .deploy_jobs import _update_static_files
+from .deploy_jobs import _update_database
+from .deploy_jobs import _inpute_value
 
 SITE_NAME = 'codelieche.com'
 
+
 def deploy():
-    '''项目代码发布'''
+    """项目代码发布"""
     # site_folder = '/home/%s/sites/%s' % (env.user, SITE_NAME)
-    site_folder = '/data/www/%s' %(SITE_NAME)
+    site_folder = '/data/www/%s' % SITE_NAME
     source_folder = site_folder + '/source'
 
     # 第1步: 创建目录结构
@@ -34,7 +34,7 @@ def deploy():
 
 
 def deploy_settings():
-    '''项目发布-服务器配置'''
+    """项目发布-服务器配置"""
     # run('sudo supervisorctl status codelieche')
     # site_folder = '/home/%s/sites/%s' % (env.user, SITE_NAME)
     site_folder = '/data/www/%s' %(SITE_NAME)
@@ -43,15 +43,15 @@ def deploy_settings():
     with cd(source_folder):
         # 进入source_folder
         run('pwd')
-        run('sed "s/SITENAME/%s/g" deploy_tools/nginx.template.conf |'\
-            ' sed "s/USERNAME/%s/g" | sudo tee /etc/nginx/sites-enabled/%s' % (
+        run('sed "s/SITENAME/%s/g" deploy_tools/nginx.template.conf | '
+            'sed "s/USERNAME/%s/g" | sudo tee /etc/nginx/sites-enabled/%s' % (
                 SITE_NAME, env.user, SITE_NAME))
     # 第二步: 写入gunicorn执行脚本
     with cd(source_folder):
         # 进入source_folder
-        run('sed "s/SITENAME/%s/g" deploy_tools/gunicorn-run.template.sh |'\
-            ' sed "s/USERNAME/%s/g" | tee ../run.sh' % (
-                SITE_NAME,env.user))
+        run('sed "s/SITENAME/%s/g" deploy_tools/gunicorn-run.template.sh | '
+            'sed "s/USERNAME/%s/g" | tee ../run.sh' % (
+                SITE_NAME, env.user))
         # 修改run.sh的权限
         run('chmod +x ../run.sh')
 
@@ -62,16 +62,17 @@ def deploy_settings():
         mysql_user = _inpute_value("请输入mysql数据库用户名:")
         mysql_password = _inpute_value("请输入mysql数据库密码:")
         # print(mysql_user, mysql_password)
-        run('sed "s/SITENAME/%s/g" deploy_tools/gunicorn-supervisor.template.conf |'\
-            ' sed "s/USERNAME/%s/g" | sed "s/MYSQL_USER_VALUE/%s/g" |'\
-            ' sed "s/MYSQL_PASSWORD_VALUE/%s/g" | sed "s/MYSQL_DB_NAME_VALUE/%s/g" |'\
-            ' sudo tee /etc/supervisor/conf.d/%s.conf' % (
+        run('sed "s/SITENAME/%s/g" deploy_tools/gunicorn-supervisor.template.conf | '
+            'sed "s/USERNAME/%s/g" | sed "s/MYSQL_USER_VALUE/%s/g" | '
+            'sed "s/MYSQL_PASSWORD_VALUE/%s/g" | sed "s/MYSQL_DB_NAME_VALUE/%s/g" | '
+            'sudo tee /etc/supervisor/conf.d/%s.conf' % (
                 SITE_NAME, env.user, mysql_user, mysql_password, mysql_db_name, SITE_NAME))
 
 
 def reload():
-    '''重启服务'''
+    """重启服务"""
     run('sudo supervisorctl restart codelieche')
+
 
 def hello():
     print('Hello fab!')

@@ -7,8 +7,13 @@ from fabric.contrib.files import append, exists, sed
 
 REPO_URL = 'https://github.com/codelieche/codelieche.com.git'
 
+
 def _create_directory_structure_if_necessary(site_folder):
-    '''创建发布项目的文件目录'''
+    """
+    创建发布项目的文件目录
+    :param site_folder: 网站跟目录
+    :return:
+    """
     for subfolder in ('database', 'static', 'virtualenv', 'source', 'logs'):
         folder = '%s/%s' % (site_folder, subfolder)
         if not exists(folder):
@@ -28,20 +33,21 @@ def _get_latest_source(source_folder):
     current_commit = local('git log -n 1 --format=%H', capture=True)
     run('cd %s && git reset --hard %s' % (source_folder, current_commit))
 
+
 def _update_settings(source_folder, site_name):
-    '''修改服务器端的配置信息:
-        1. 修改: DEBUG = False
-        2. 修改: ALLOWED_HOSTS = ['xxx.site.com']
-    '''
+    """
+    修改服务器端的配置信息:
+    1. 修改: DEBUG = False
+    2. 修改: ALLOWED_HOSTS = ['xxx.site.com']
+    """
     settings_path = source_folder + '/codelieche/settings.py'
     # 修改debug为False
     sed(settings_path, "DEBUG = True", "DEBUG = False")
     # 设置允许的域名
     sed(settings_path,
         'ALLOWED_HOSTS = .+$',
-
         'ALLOWED_HOSTS =["%s", "www.%s"]' % (site_name, site_name)
-       )
+        )
     # 如果'secrret_key.py' 文件不存在，则创建密匙文件
     secret_key_file = source_folder + '/codelieche/secret_key.py'
     if not exists(secret_key_file):
@@ -50,10 +56,11 @@ def _update_settings(source_folder, site_name):
         append(secret_key_file, "SECRET_KEY = '%s'" % key)
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
+
 def _update_virtualenv(source_folder):
-    '''
+    """
     更新服务器，python虚拟环境，安装新的依赖包
-    '''
+    """
     virtualenv_folder = source_folder + '/../virtualenv'
     if not exists(virtualenv_folder + '/bin/python'):
         run('virtualenv --python=python3 %s' % virtualenv_folder)
@@ -62,13 +69,15 @@ def _update_virtualenv(source_folder):
         virtualenv_folder, source_folder
     ))
 
+
 def _update_static_files(source_folder):
-    '''更新静态文件'''
-    run('cd %s && ../virtualenv/bin/python3 '\
-      'manage.py collectstatic --noinput' % source_folder)
+    """更新静态文件"""
+    run('cd %s && ../virtualenv/bin/python3 '
+        'manage.py collectstatic --noinput' % source_folder)
+
 
 def _update_database(source_folder):
-    '''更新数据库文件'''
+    """更新数据库文件"""
     ask_update_db = _inpute_value("是否需要更新数据库表格:Y or N")
     if ask_update_db.upper() == 'N':
         return
@@ -79,12 +88,12 @@ def _update_database(source_folder):
         mysql_db_name, mysql_user, mysql_password
     )
     print(export_cmd)
-    run('cd %s && %s && ../virtualenv/bin/python3 '\
-    'manage.py migrate --noinput' % (source_folder, export_cmd))
+    run('cd %s && %s && ../virtualenv/bin/python3 '
+        'manage.py migrate --noinput' % (source_folder, export_cmd))
+
 
 def _inpute_value(notes):
-    '''用户输入信息'''
-    result = ''
+    """用户输入信息"""
     try:
         result = raw_input(notes)
     except Exception:

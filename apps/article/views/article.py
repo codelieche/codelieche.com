@@ -12,7 +12,7 @@ from account.models import UserData
 from utils.article import get_article_id
 from utils.paginator import get_page_num_list
 from article.forms import PostForm, ImageForm
-from article.models import Category, Post, Tag, Upload
+from article.models import Category, Post, Tag, Image
 # Create your views here.
 
 
@@ -154,20 +154,20 @@ def create(request):
             tags = form.cleaned_data['tags']
             if tags.find('，') > 0:
                 tags = tags.replace("，", ",")
-            top = form.cleaned_data['top']
-            good = form.cleaned_data['good']
+            is_top = form.cleaned_data['is_top']
+            is_good = form.cleaned_data['is_good']
             deleted = form.cleaned_data['deleted']
-            created = form.cleaned_data['created']
-            post_pk = get_article_id(created)
+            time_added = form.cleaned_data['time_added']
+            post_pk = get_article_id(time_added)
             # print(category,title,content,status,tags)
             post = Post(pk=post_pk, category=category, title=title,
                         content=content, status=status, author=request.user,
-                        top=top, good=good, deleted=deleted)
+                        is_top=is_top, is_good=is_good, deleted=deleted)
 
             # print(post.tags)
             post.save()
-            post.created = created
-            post.save(update_fields=['created'])
+            post.time_added = time_added
+            post.save(update_fields=['time_added'])
             # 文章保存后，要对 UserData中的article的内容清空
             ud.content = ""
             ud.save()
@@ -179,7 +179,7 @@ def create(request):
                         continue
                     # get_or_create是Tag的静态方法
                     #  必须加strip，去除首位空格
-                    tag = Tag.get_or_create(name=tag.strip())
+                    tag, created = Tag.objects.get_or_create(name=tag.strip())
                     post.tags.add(tag)
             if post.deleted:
                 return HttpResponseRedirect(redirect_to="/")
@@ -191,7 +191,11 @@ def create(request):
         return HttpResponseRedirect(redirect_to="/article/create")
 
     else:
-        return render(request, "article/create.html", {"post":post, "categories":categories})
+        content = {
+            "post": post,
+            "categories": categories
+        }
+        return render(request, "article/create.html", content)
 
 
 @login_required(login_url="/user/login")
@@ -216,8 +220,8 @@ def editor(request, pk=None):
             tags = form['tags']
             if tags.find('，') > 0:
                 tags = tags.replace("，", ",")
-            top = form['top']
-            good = form['good']
+            top = form['is_top']
+            good = form['is_good']
             deleted = form['deleted']
             # print(category,title,content,status,tags,deleted)
             # 修改post对象的 分类，标题，内容，状态，author，top，good信息
@@ -225,8 +229,8 @@ def editor(request, pk=None):
             post.title = title
             post.content = content
             post.status = status
-            post.top = top
-            post.good = good
+            post.is_top = top
+            post.is_good = good
             post.deleted = deleted
             # print(post.tags.all())
             tags_list = []
@@ -234,7 +238,7 @@ def editor(request, pk=None):
                 for tag in tags.split(','):
                     if tag:
                         # get_or_create是Tag的静态方法
-                        tag = Tag.get_or_create(name=tag.strip())  # 必须加strip，去除首位空格
+                        tag, created = Tag.objects.get_or_create(name=tag.strip())  # 必须加strip，去除首位空格
                         tags_list.append(tag)
                     else:
                         continue
@@ -295,12 +299,12 @@ def upload_image(request):
         # print(dir(request.FILES['filename']))
         # print(file.size)
         if form.is_valid():
-            image = Upload(filename=form.cleaned_data['filename'],
-                           user=request.user)
+            filename = form.cleaned_data['filename']
+            image = Image(filename=filename, url=filename, user=request.user)
             image.save()
             response_data = {
                 'success': 'true',
-                'url': '/media/%s' % image,
+                'url': '/media/%s' % image.url,
             }
             return JsonResponse(response_data)
         else:
