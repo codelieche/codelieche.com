@@ -33,6 +33,17 @@ INSERT INTO codelieche.article_post (id, title, content, time_added, time_update
 SELECT id,title,content,created,updated,status,top,good,deleted,visit_count,reply_count,author_id,category_id FROM codelieche_1.article_post;
 ```
 
+#### 4. 迁移文章的标签
+- 1.0的字段：id, post_id, tag_id
+- 2.0的字段：id, post_id, tag_id
+
+```sql
+INSERT INTO codelieche.article_post_tags (id, post_id, tag_id)
+SELECT id, post_id, tag_id FROM codelieche_1.article_post_tags;
+```
+
+
+
 
 ### 遇到的问题
 
