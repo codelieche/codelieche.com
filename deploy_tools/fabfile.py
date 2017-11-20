@@ -1,14 +1,18 @@
 # -*- coding:utf-8 -*-
+from __future__ import absolute_import
+
 from fabric.api import env, run
 from fabric.context_managers import cd
 
-from .deploy_jobs import _create_directory_structure_if_necessary
-from .deploy_jobs import _get_latest_source
-from .deploy_jobs import _update_settings
-from .deploy_jobs import _update_virtualenv
-from .deploy_jobs import _update_static_files
-from .deploy_jobs import _update_database
-from .deploy_jobs import _inpute_value
+from deploy_jobs import (
+    _create_directory_structure_if_necessary,
+    _get_latest_source,
+    _update_settings,
+    _update_virtualenv,
+    _update_static_files,
+    _update_database,
+    _inpute_value,
+)
 
 SITE_NAME = 'codelieche.com'
 

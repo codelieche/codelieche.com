@@ -14,7 +14,7 @@ def _create_directory_structure_if_necessary(site_folder):
     :param site_folder: 网站跟目录
     :return:
     """
-    for subfolder in ('database', 'static', 'virtualenv', 'source', 'logs'):
+    for subfolder in ('database', 'static', 'virtualenv', 'source', 'media', 'logs'):
         folder = '%s/%s' % (site_folder, subfolder)
         if not exists(folder):
             run('mkdir -p %s' % folder)
@@ -88,8 +88,9 @@ def _update_database(source_folder):
         mysql_db_name, mysql_user, mysql_password
     )
     print(export_cmd)
+    # 收集app中的静态文件，同时把static中的文件复制到上级的static中
     run('cd %s && %s && ../virtualenv/bin/python3 '
-        'manage.py migrate --noinput' % (source_folder, export_cmd))
+        'manage.py migrate --noinput && cp -rf static/* ../static/' % (source_folder, export_cmd))
 
 
 def _inpute_value(notes):
