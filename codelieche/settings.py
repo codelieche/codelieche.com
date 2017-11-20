@@ -135,10 +135,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # 收集静态文件去STATIC_ROOT中：python manage.py collectstatic
-# STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 # 上传图片或者文件放在media中
 MEDIA_URL = '/media/'
