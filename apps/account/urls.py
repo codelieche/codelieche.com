@@ -5,6 +5,6 @@ from account.views.user import LoginView, user_logout
 
 app_name = "account"
 urlpatterns = [
-    url('^login$', LoginView.as_view(), name="login"),
-    url('^logout$', user_logout, name='logout'),
+    url('^login/?$', LoginView.as_view(), name="login"),
+    url('^logout/?$', user_logout, name='logout'),
 ]

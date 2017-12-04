@@ -11,7 +11,7 @@ from article.serializers.article import PostSerializer,TagSerializer
 from article.models import Post, Tag
 
 
-@method_decorator(login_required(login_url="/user/login"), name="dispatch")
+@method_decorator(login_required(), name="dispatch")
 class PostListView(APIView):
     def get(self, request, format=None):
         posts = Post.objects.all()
@@ -27,7 +27,7 @@ class PostListView(APIView):
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
-@method_decorator(login_required(login_url="/user/login"), name="dispatch")
+@method_decorator(login_required(), name="dispatch")
 class TagListView(APIView):
     def get(self, request, format=None):
         tags = Tag.objects.all()
@@ -44,7 +44,7 @@ class TagListView(APIView):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@login_required(login_url='/user/login')
+@login_required
 def post_detail(request, pk):
     try:
         post = Post.objects.get(pk=pk)
@@ -69,7 +69,7 @@ def post_detail(request, pk):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@login_required(login_url='/user/login')
+@login_required
 def tag_detail(request, pk):
     try:
         tag = Tag.objects.get(pk=pk)
