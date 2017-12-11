@@ -7,7 +7,7 @@ from .models import Category, Post, Comment, Tag, Image
 
 
 class CategoryModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'slug']
+    list_display = ['id', 'name', 'slug', 'level']
     list_display_links = ['id', 'slug']
     ordering = ['id']
 

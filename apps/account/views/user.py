@@ -49,7 +49,7 @@ class LoginView(View):
 def user_logout(request):
     """用户退出"""
     logout(request)
-    next_url = request.GET.get('next', '/user/login')
+    next_url = request.GET.get('next', '/account/login')
     return HttpResponseRedirect(redirect_to=next_url)
 
 

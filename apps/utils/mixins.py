@@ -9,7 +9,7 @@ class LoginRequiredMixin(object):
     View需要登陆才能访问Mixin
     """
 
-    @method_decorator(login_required(login_url='/user/login/'))
+    @method_decorator(login_required(login_url='/account/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)

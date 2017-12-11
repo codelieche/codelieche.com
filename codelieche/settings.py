@@ -147,6 +147,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 # 注册系统使用哪个用户模型
 # 不需要加入中间的models
 AUTH_USER_MODEL = "account.UserProfile"
+# 默认的登陆地址
+LOGIN_URL = '/account/login/'
 
 # 使用自定义的后台auth认证方法
 AUTHENTICATION_BACKENDS = (

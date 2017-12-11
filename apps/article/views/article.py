@@ -114,7 +114,7 @@ class PostDetailView(View):
         return render(request, 'article/detail.html', {"post": post})
 
 
-@login_required(login_url="/user/login")
+@login_required
 def create(request):
     """
     创建文章
@@ -198,7 +198,7 @@ def create(request):
         return render(request, "article/create.html", content)
 
 
-@login_required(login_url="/user/login")
+@login_required
 def editor(request, pk=None):
     """文章编辑view"""
     categories = Category.objects.all()
@@ -255,7 +255,7 @@ def editor(request, pk=None):
     return render(request, "article/editor.html", {"post": post, "categories": categories})
 
 
-@login_required(login_url="/user/login")
+@login_required
 def save(request):
     """创建文章中途保存"""
     # 从UserData中获取type为article的数据
@@ -288,7 +288,7 @@ def save(request):
         raise Http404
 
 
-@login_required(login_url="/user/login")
+@login_required
 def upload_image(request):
     """上传图片"""
     if request.method == "GET":
