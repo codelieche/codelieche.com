@@ -66,6 +66,7 @@ def get_fields_verbosename(model, fields):
         elif "manay" in field and field["many"]:
             # 多对多的，就不取verbose_name了，直接用name这个值
             fields_names.append(field["name"])
+            find_field_flag = True
         else:
             # 如果field中没verbose_name字段，也不是many
             # 2-2：那么就去模型的fields中一个一个找
@@ -81,11 +82,12 @@ def get_fields_verbosename(model, fields):
                     # 设置字段找到标志位True，同时跳出循环
                     find_field_flag = True
                     break
-            # 2-3：如果字段没找到，需要抛出异常
-            if not find_field_flag:
-                raise Exception("没有找到{}".format(field["name"]))
-        # 3：返回fields_names
-        return fields_names
+        # 2-3：如果字段没找到，需要抛出异常
+        if not find_field_flag:
+            raise Exception("没有找到{}".format(field["name"]))
+
+    # 3：返回fields_names
+    return fields_names
 
 
 def get_obj_fields_data(obj, fields):
@@ -160,7 +162,7 @@ def exports_data_to_excel(data, filename=None):
     :return: response
     """
     # 第1步：先创建一个工作簿
-    wbook = xlwt.Workbook(enconding="utf-8", style_compression=0)
+    wbook = xlwt.Workbook(encoding="utf-8", style_compression=0)
 
     # 第2步：添加个工作表
     wsheet = wbook.add_sheet(sheetname="导出数据")
@@ -228,7 +230,7 @@ def get_export_data(app_label, model_name, fields, filters=None):
             # 过滤字段的条件值
             filter_value = _filter["value"]
             # 把这个过滤的字段，加入到kwargs中
-            kwargs[filter_value] = filter_value
+            kwargs[filter_name] = filter_value
         # 处理完过滤字段后，重新获取下objs
         objs = objs.filter(**kwargs)
 
@@ -261,7 +263,8 @@ def test_export():
         {"name": "last_login"}
     ]
     filters = [
-        {"name": "id", "flag": "__lt", "value": 1}
+        {"name": "id", "flag": "__gte", "value": 1}
     ]
 
     return get_export_data(app, model, fields, filters=filters)
+    # return get_export_data(app, model, fields)
