@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^article/', include('article.urls.article', namespace="article")),
     url(r'^category/', include('article.urls.category', namespace="category")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 # 这里还要添加下/media/xxx.jpg文件的路由，生产环境的时间是用nginx来部署静态文件的
 
 # 错误页面
