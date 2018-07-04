@@ -35,6 +35,8 @@ class ArticleListView(View):
                 # 文章只能有一个分类，所以不会取到重复对象的
                 all_posts = all_posts.union(sub_posts)
 
+        # 文章倒序排列，最新的文章放前面
+        all_posts = all_posts.order_by("-id")
         if page:
             page_num = int(page)
         else:
