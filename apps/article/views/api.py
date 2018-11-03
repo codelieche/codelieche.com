@@ -15,6 +15,14 @@ from article.models import Post, Tag
 class PostListView(APIView):
     def get(self, request, format=None):
         posts = Post.objects.all()
+        # 根据时间过滤: 根据日期区间过滤
+        date_time__date__gte = request.data.get("date_time__date__gte")
+        date_time__date__lte = request.data.get("date_time__date__lte")
+        if date_time__date__gte:
+            posts = posts.filter(time_added__date__gte=date_time__date__lte)
+        if date_time__date__lte:
+            posts = posts.filter(time_added__date__gte=date_time__date__lte)
+
         serializer = PostSerializer(posts,many=True)
         return Response(serializer.data)
 
