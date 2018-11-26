@@ -16,9 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from codelieche.views.httperror import page_403, page_404, page_500
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # api v1 url
     path('api/v1/', include(arg=("codelieche.urls.api_v1", "codelieche"), namespace="api")),
 ]
+
+# 错误页面
+handler403 = page_403
+handler404 = page_404
+handler500 = page_500
