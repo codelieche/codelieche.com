@@ -1,8 +1,6 @@
 # -*- coding:utf-8 -*-
-from django.conf.urls import url, include
+from django.urls import path, include
 
 urlpatterns = [
-    # url前缀：/api/v1/
-
-    url(r'^utils/', include("utils.urls.api", "utils"), name="utils"),
+    # 前缀：/api/v1/
 ]

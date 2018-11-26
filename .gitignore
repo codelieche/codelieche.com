@@ -11,3 +11,8 @@ db.sqlite3
 tmp/
 *.css.map
 
+# 忽略migrations文件
+**/migrations/*.py
+!**/migrations/__init__.py
+
+

@@ -16,17 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
-from django.conf import settings
-from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # api v1 url
     path('api/v1/', include(arg=("codelieche.urls.api_v1", "codelieche"), namespace="api")),
-
-    # Djago Rest Framework自动api 文档，正式环境会取消
-    path('docs/', include_docs_urls(title="Codelieche API文档"))
-
-    # 加入media路由配置，生产环境不会用这个来获取静态文件
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

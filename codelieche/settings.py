@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # 自己写的app
     'account',
+    'modellog'
 ]
 
 MIDDLEWARE = [
@@ -88,8 +89,8 @@ DATABASES = {
         "NAME": os.environ.get('MYSQL_DB_CODELIECHE', 'codelieche'),
         'USER': os.environ.get('MYSQL_USER', 'root'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
-        'HOST': '127.0.0.1',
-        'PORT': 3306
+        'HOST': os.environ.get('MYSQL_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('MYSQL_PORT', 3306)
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -141,7 +142,7 @@ STATIC_URL = '/static/'
 
 # 开发环境使用SATICFILES_DIRS
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 )
 
 # 上传图片或者文件放在media中
