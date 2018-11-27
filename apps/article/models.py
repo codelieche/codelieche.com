@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 from utils.store import ImageStorage
 
@@ -54,9 +55,9 @@ class Tag(models.Model):
             self.slug = Tag.objects.count()
         super().save(*args, **kwargs)
 
-    # def get_absolute_url(self):
-    #     """Tag对象的绝对路径"""
-    #     return
+    def get_absolute_url(self):
+        """Tag对象的绝对路径"""
+        return reverse('pages:article:detail', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = "标签"
@@ -131,9 +132,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    # def get_absolute_url(self):
-    #     """获取文章的绝对路径"""
-    #     return reverse('article:detail', kwargs={'pk': self.pk})
+    def get_absolute_url(self):
+        """获取文章的绝对路径"""
+        return reverse('pages:article:detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ('-time_added',)
@@ -181,3 +182,21 @@ class Image(models.Model):
     class Meta:
         verbose_name = "图片"
         verbose_name_plural = verbose_name
+
+
+class UserData(models.Model):
+    """
+    用户数据，保存临时文章等
+    不同用户有一些临时碎片信息，在不同session中要用到的数据
+    """
+    TYPE_CHOICE = (
+        ('article', "临时文章"),
+        ('comment', '临时评论')
+    )
+    user = models.ForeignKey(to=User, related_name="userdatas", on_delete=models.CASCADE)
+    type = models.CharField(verbose_name="类型", max_length=20, choices=TYPE_CHOICE)
+    content = models.TextField(verbose_name="信息内容")
+    time_updated = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    def __str__(self):
+        return "%s -> %s" % (self.user, self.type)

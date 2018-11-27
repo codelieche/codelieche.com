@@ -23,6 +23,9 @@ from codelieche.views.httperror import page_403, page_404, page_500
 
 
 urlpatterns = [
+    # pages
+    path('', include(arg=("codelieche.urls.pages", "codelieche"), namespace="pages")),
+    # admin
     path('admin/', admin.site.urls),
     # api v1 url
     path('api/v1/', include(arg=("codelieche.urls.api_v1", "codelieche"), namespace="api")),

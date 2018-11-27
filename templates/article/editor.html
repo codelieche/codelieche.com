@@ -67,8 +67,8 @@
                 <label for="id_top">置顶</label>
                 <input type="checkbox" name="is_good" id="id_good" {% if post.is_good %}  checked="checked" {% endif %}>
                 <label for="id_good">精华</label>
-                <input type="checkbox" name="deleted" id="id_deleted" {% if post.deleted %} checked="checked" {% endif %}>
-                <label for="id_deleted" >删除</label>
+                <input type="checkbox" name="is_deleted" id="id_is_deleted" {% if post.is_deleted %} checked="checked" {% endif %}>
+                <label for="id_is_deleted" >删除</label>
                 <input id="old_content" value="{{ post.content }}" type="hidden">
             </p>
             <div class="buttons">
