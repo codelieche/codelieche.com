@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # 自己写的app
     'account',
+    'article',
     'modellog'
 ]
 
@@ -87,7 +88,7 @@ WSGI_APPLICATION = 'codelieche.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get('MYSQL_DB_CODELIECHE', 'codelieche'),
+        "NAME": os.environ.get('MYSQL_DB_CODELIECHE', 'codelieche_develop'),
         'USER': os.environ.get('MYSQL_USER', 'root'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
         'HOST': os.environ.get('MYSQL_HOST', '127.0.0.1'),
