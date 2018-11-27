@@ -9,5 +9,7 @@ urlpatterns = [
     path('tag/', include(arg=("article.urls.api.tag", "article"), namespace="tag")),
     # 文章api
     path('post/', include(arg=("article.urls.api.post", "article"), namespace="post")),
+    # 文章图片api
+    path('image/', include(arg=("article.urls.api.image", "article"), namespace="image")),
 
 ]

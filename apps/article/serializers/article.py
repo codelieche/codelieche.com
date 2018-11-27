@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework import serializers
 
-from article.models import Category, Post, Tag
+from article.models import Category, Post, Tag, Image
 
 
 class CategoryParentModelSerializer(serializers.ModelSerializer):
@@ -52,3 +52,14 @@ class PostModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', "category", 'title', 'author', 'content', 'time_added', 'tags']
+
+
+class ImageModelSerializer(serializers.ModelSerializer):
+    """
+    文章图片Model Serializer
+    """
+    url = serializers.ImageField(help_text="上传文件图片")
+
+    class Meta:
+        model = Image
+        fields = ("user", "filename", "url", "time_added")
