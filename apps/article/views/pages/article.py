@@ -272,6 +272,7 @@ def save(request):
         if form.is_valid():
             form = form.cleaned_data
             # 把form转成dict，再用json.dumps成字符串，方便在create中转成字典
+            form["time_added"] = form["time_added"].strftime("%F %T")
             ud.content = json.dumps(dict(form))
             # print(json.dumps(dict(form)))
             # print(form)

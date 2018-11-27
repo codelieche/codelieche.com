@@ -2,7 +2,7 @@
 from django.urls import re_path
 
 from article.views.pages.category import ArticleListView
-app_name = "article"
+app_name = "category"
 
 
 urlpatterns = [
