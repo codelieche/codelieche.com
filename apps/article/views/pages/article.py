@@ -241,7 +241,7 @@ def editor(request, pk=None):
                     else:
                         continue
             # 对post的tags重新赋值
-            # post.tags = tags_list
+            post.tags.set(tags_list)
             post.save()
 
             if is_deleted:
