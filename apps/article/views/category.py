@@ -1,58 +1,52 @@
 # -*- coding:utf-8 -*-
-from django.shortcuts import get_object_or_404, render
-from django.views.generic import View
-from django.core.paginator import Paginator
+from rest_framework import generics
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
-from article.models import Category, Post
-from utils.paginator import get_page_num_list
+
+from article.serializers.article import CategoryModelSerializer
+from article.models import Category
 
 
-class ArticleListView(View):
+class CategoryListApiView(generics.ListAPIView):
     """
-    分类文章列表View
+    文章分类列表api
     """
-    def get(self, request, slug, page=None):
-        # 第1步：先获取到当前分类
-        category = get_object_or_404(Category, slug=slug)
+    queryset = Category.objects.all()
+    # permission_classes = (IsAuthenticated, )
+    serializer_class = CategoryModelSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_fields = ("parent", "parent__slug")
+    search_fields = ("category", "name")
+    ordering_fields = ("id", "level")
+    ordering = ("id", )
 
-        # 第2步：获取分类的所有文章
-        # 博客文章分类，只设置了2级，没有多级的，所以不需要对sub_category再次进行取子集
-        sub_categories = category.category_set.all()
 
-        # 超级用户可以查看所有文章【包含删除的】
-        if request.user.is_superuser:
-            all_posts = Post.objects.filter(category=category)
-            # 联合sub_category的文章
-            if sub_categories:
-                sub_posts = Post.objects.filter(category__in=sub_categories)
-                # 文章只能有一个分类，所以不会取到重复对象的
-                all_posts = all_posts.union(sub_posts)
+class CategoryDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    文章分类详情api
+    """
+    queryset = Category.objects.all()
+    # permission_classes = (IsAuthenticated, )
+    serializer_class = CategoryModelSerializer
+
+    def update(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_authenticated and user.has_perm("artcile.change_category"):
+            # 调用父类方法
+            return super().update(request=request, *args, **kwargs)
         else:
-            all_posts = Post.published.filter(category=category)
-            # 联合sub_category的文章
-            if sub_categories:
-                sub_posts = Post.objects.filter(category__in=sub_categories)
-                # 文章只能有一个分类，所以不会取到重复对象的
-                all_posts = all_posts.union(sub_posts)
+            return Response(data="无权限修改", status=status.HTTP_403_FORBIDDEN)
 
-        # 文章倒序排列，最新的文章放前面
-        all_posts = all_posts.order_by("-id")
-        if page:
-            page_num = int(page)
+    def destroy(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_authenticated and user.has_perm("artcile.delete_category"):
+            instance = self.get_object()
+            if not instance.is_deleted:
+                instance.is_deleted = True
+                instance.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            page_num = 1
-
-        p = Paginator(all_posts, 10)
-        posts = p.page(page_num)
-        page_count = p.num_pages
-
-        # 获取分页器的页码列表，得到当前页面最近的7个页码列表
-        page_num_list = get_page_num_list(page_count, page_num, 7)
-
-        content = {
-            'posts': posts,
-            'category': category,
-            'last_page': page_count,
-            'page_num_list': page_num_list
-        }
-        return render(request, 'article/list.html', content)
+            return Response(data="无权限删除", status=status.HTTP_403_FORBIDDEN)

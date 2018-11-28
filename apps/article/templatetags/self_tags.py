@@ -27,7 +27,7 @@ def markdown(value):
     return html
 
 
-@register.assignment_tag()
+@register.simple_tag()
 def get_top_article_categories():
     """
     获取顶级文章分类列表
@@ -36,7 +36,7 @@ def get_top_article_categories():
     return Category.objects.filter(level=1)
 
 
-@register.assignment_tag()
+@register.simple_tag()
 def get_all_article_categories():
     """
     获取文章分类列表
@@ -45,7 +45,7 @@ def get_all_article_categories():
     return Category.objects.all()
 
 
-@register.assignment_tag()
+@register.simple_tag()
 def get_all_article_tags():
     """
     获取文章的所有标签
@@ -54,7 +54,7 @@ def get_all_article_tags():
     return Tag.objects.all()
 
 
-@register.assignment_tag()
+@register.simple_tag()
 def get_hot_article_tags():
     """
     获取文章的所有标签
@@ -75,7 +75,7 @@ def get_latest_posts(count=5):
     return {'latest_posts': latest_posts}
 
 
-@register.assignment_tag(name="get_most_polular_posts")
+@register.simple_tag(name="get_most_polular_posts")
 def get_most_popular_posts(count=5):
     """
     返回最受欢迎的帖子，暂时是按照访问量，后续改成评论数
@@ -87,7 +87,7 @@ def get_most_popular_posts(count=5):
 
 
 #获取相似的帖子
-@register.assignment_tag()
+@register.simple_tag()
 def get_similar_posts(post,count=5):
     post_tags_ids = post.tags.values_list('id', flat=True)
     if not post_tags_ids:
@@ -100,7 +100,7 @@ def get_similar_posts(post,count=5):
     return similar_posts
 
 
-@register.assignment_tag()
+@register.simple_tag()
 def get_now():
     now = datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")

@@ -12,7 +12,7 @@ class PostForm(forms.Form):
     time_added = forms.DateTimeField(label="发布时间", required=False)
     is_top = forms.BooleanField(widget=forms.CheckboxInput, label="置顶", required=False)
     is_good = forms.BooleanField(widget=forms.CheckboxInput, label="精华", required=False)
-    deleted = forms.BooleanField(widget=forms.CheckboxInput, label="删除", required=False)
+    is_deleted = forms.BooleanField(widget=forms.CheckboxInput, label="删除", required=False)
 
 
 class ImageForm(forms.Form):

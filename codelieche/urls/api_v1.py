@@ -1,8 +1,10 @@
 # -*- coding:utf-8 -*-
-from django.conf.urls import url, include
+from django.urls import path, include
 
 urlpatterns = [
-    # url前缀：/api/v1/
-
-    url(r'^utils/', include("utils.urls.api", "utils"), name="utils"),
+    # 前缀：/api/v1/
+    # 用户账号模块api
+    path('account/', include(arg=("account.urls.api.main", "account"), namespace="account")),
+    # 文章模块api
+    path('article/', include(arg=("article.urls.api.main", "article"), namespace="article")),
 ]

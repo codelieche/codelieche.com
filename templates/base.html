@@ -29,7 +29,7 @@
                         <ul class="nav" id="nav">
                             {% if categories %}
                                 {% for category in categories %}
-                                    <li><a href="{% url 'category:list' category.slug %}">{{ category.name }}</a></li>
+                                    <li><a href="{% url 'pages:category:list' category.slug %}">{{ category.name }}</a></li>
                                 {% endfor %}
                             {% endif %}
                         </ul>
@@ -52,7 +52,7 @@
                             <ul class="tags">
                                 {% for tag in article_tags %}
                                 <li>
-                                    <a class="tag" href="{% url 'article:tag_list' tag.slug %}">{{ tag.name }}</a>
+                                    <a class="tag" href="{% url 'pages:article:tag_list' tag.slug %}">{{ tag.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
