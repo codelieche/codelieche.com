@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # 自己写的app
     'account',
     'article',
+    'question',
     'modellog'
 ]
 
