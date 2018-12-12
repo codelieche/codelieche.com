@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from question.models.question import Job
 from question.serializer.question import JobModelSerializer
+from question.serializer.report import ReportDetailSerializer
 
 
 class JobListApiView(generics.ListAPIView):
@@ -28,4 +29,20 @@ class JobDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Job.objects.all()
     serializer_class = JobModelSerializer
+    # permission_classes = (IsAuthenticated,)
+
+
+class JobReportsListApiView(generics.ListAPIView):
+    """
+    问卷回答的列表api
+    """
     permission_classes = (IsAuthenticated,)
+    serializer_class = ReportDetailSerializer
+
+    def get_queryset(self):
+        job = Job.objects.filter(**self.kwargs).first()
+        if job:
+            return job.report_set.all().order_by("-id")
+        else:
+            return []
+

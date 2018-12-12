@@ -2,6 +2,8 @@
 from rest_framework import serializers
 
 from question.models.question import Report, Answer
+from question.serializer.question import JobModelSerializer
+from question.serializer.answer import AnswerDetailSerializer
 
 
 class ReportModelSerializer(serializers.ModelSerializer):
@@ -23,8 +25,18 @@ class ReportModelSerializer(serializers.ModelSerializer):
             category = question.category
             field_name = "question_{}".format(question.id)
             field_value = request.data.get(field_name)
+            # 判断传入的值是否为空
             if not field_value:
                 raise serializers.ValidationError("问题(ID:{})：{}，回答未填写".format(question.id, question.title))
+
+            # 判断是否需要唯一值
+            if question.is_unique:
+                # 从答案中查找相关的值【注意：只有用户自己输入的才可能需要唯一值，单选和复选框是没唯一值一说的】
+                if category == "text":
+                    answer_exist = Answer.objects.filter(question=question, answer=field_value).first()
+                    if answer_exist:
+                        raise serializers.ValidationError(
+                            "问题(ID:{})：{}，回答值需唯一！值({})已经提交".format(question.id, question.title, field_value))
             if category == "radio":
                 # 如果是单选或者多选框，需要校验结果
                 choice = question.choices.filter(option=field_value).first()
@@ -94,6 +106,18 @@ class ReportModelSerializer(serializers.ModelSerializer):
 
             instance.answers.add(answer)
         return instance
+
+    class Meta:
+        model = Report
+        fields = ("id", "job", "user", "ip", "time_added", "answers")
+
+
+class ReportDetailSerializer(serializers.ModelSerializer):
+    """
+    问卷回答详情api
+    """
+    # job = JobModelSerializer(read_only=True)
+    answers = AnswerDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = Report

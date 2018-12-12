@@ -2,7 +2,8 @@
 
 from rest_framework import serializers
 
-from question.models.question import Job, Question, Choice, Answer, Report
+from question.models.question import Job, Question, Choice, Report
+from question.serializer.answer import AnswerModelSerializer
 
 
 class ChoiceModelSerializer(serializers.ModelSerializer):
@@ -38,16 +39,6 @@ class JobModelSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "title", "description",
                   "is_active", "is_authenticated", "questions",
                   "time_start", "time_expired", "time_added")
-
-
-class AnswerModelSerializer(serializers.ModelSerializer):
-    """
-    Answer Model Serializer
-    """
-
-    class Meta:
-        model = Answer
-        fields = ("id", "question", "option", "answer")
 
 
 class ReportModelSerializer(serializers.ModelSerializer):
