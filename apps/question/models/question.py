@@ -8,6 +8,7 @@ class Job(models.Model):
     """
     问卷 Model
     """
+    name = models.SlugField(verbose_name="网址", max_length=40, unique=True)
     title = models.CharField(verbose_name="标题", max_length=128)
     questions = models.ManyToManyField(verbose_name="问题", to="Question", blank=True)
     time_start = models.DateTimeField(verbose_name="开始时间", blank=True, null=True)

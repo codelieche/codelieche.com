@@ -9,7 +9,7 @@ class JobModelAdmin(admin.ModelAdmin):
     """
     Job Model Admin
     """
-    list_display = ("id", "title", "description", "time_added", "is_active", "is_authenticated")
+    list_display = ("id", "name", "title", "description", "time_added", "is_active", "is_authenticated")
 
 
 class QuestionModelAdmin(admin.ModelAdmin):
