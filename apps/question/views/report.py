@@ -25,6 +25,11 @@ class ReportDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportDetailSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        # TODO：需要做权限校验
+        # 有user的只可看自己的，没user的，可以根据ip来做判断
+        return super().retrieve(request=request, *args, **kwargs)
+
     def destroy(self, request, *args, **kwargs):
         user = request.user
         if user.has_perm("question.delete_report"):
