@@ -7,6 +7,8 @@ import { Route, Switch } from "react-router-dom";
 // 问卷相关组件
 import JobDetail from "./Detail";
 
+
+
 class JobIndex extends Component {
     render() {
         return (
