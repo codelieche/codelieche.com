@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 from rest_framework import serializers
 
-from question.models.question import Report, Answer
-from question.serializer.question import JobModelSerializer
+from question.models.question import Job, Report, Answer
+# from question.serializer.question import JobModelSerializer
 from question.serializer.answer import AnswerDetailSerializer
 
 
@@ -10,7 +10,6 @@ class ReportModelSerializer(serializers.ModelSerializer):
     """
     Report Model Serializer
     """
-
     def check_job_answers(self, job):
         # print("validate_answers", job)
         # 1. 获取到问卷的所有问题

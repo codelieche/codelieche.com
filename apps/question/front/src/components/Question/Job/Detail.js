@@ -44,7 +44,7 @@ class JobDetail extends Component {
     }
 
     handleAddSubmit = (values) => {
-        values["job"] = this.state.id;
+        values["job"] = this.state.detail.id;
         // console.log(values);
         // 通过Fetch Post 添加问卷回答
         const url = "http://127.0.0.1:8090/api/v1/question/report/create";

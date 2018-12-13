@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-.question-job {
+.question-job, .question-report {
     padding: 10px;
     .header {
         padding: 10px 35px;
@@ -15,11 +15,106 @@
         background-color: #dfdfdf;
     }
 
-    .forms {
+    .forms , .answers{
         padding: 10px 20px;
         width: 70%;
         margin: 10px auto;
         min-width: 650px;
         max-width: 950px;
+    }
+}
+
+// .container {
+//     padding: 10px 20px;
+//     // 主内容标题
+//     .title {
+//       // border-bottom: 1px solid #DDD;
+//       margin-bottom: 10px;
+//       h4 {
+//         border-left: 2px solid #88b7e0;
+//         padding-left: 10px;
+//         margin-top: 8px;
+//         margin-bottom: 6px;
+//         color: #444;
+//       }
+//     }
+// }
+
+// 主体内容中的信息展示属性样式
+.container .info-property {
+    // 详情页 属性信息样式
+    margin: 0 auto 20px;
+    padding: 10px 20px 5px 20px;
+    // padding-right: 10px;
+    // border: 1px solid #e6e6e6;
+  
+    border: 1px solid #d4d6d8;
+    box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-right: 10px;
+    dl:last-child {
+      border-bottom: none;
+    }
+    dl {
+      font-size: 14px;
+      line-height: 32px;
+      // border-bottom: 2px dotted #cecece;
+      border-bottom: 1px dashed #e6e6e6;
+      // color: #333;
+      display: flex;
+      padding: 0;
+      margin: 0;
+      dd {
+        margin-bottom: 0;
+      }
+      dt,
+      dd {
+        // 有时候信息太长，要设置下自动换行
+        display: inline-block;
+        word-wrap: break-word;
+        word-break: break-all;
+        img {
+          width: 400px;
+          height: 250px;
+        }
+      }
+      dt {
+        width: 140px;
+        // font-size: 15px;
+        color: #666;
+        vertical-align: top;
+      }
+      dd {
+        flex: 1;
+        list-style: none;
+      }
+    }
+}
+
+
+.container .answers {
+    .answer-item{
+        margin: 10px 0;
+        padding: 5px 10px;
+        // border-bottom: 1px solid #dfdfdf;
+        .title {
+            border-left: 4px solid #118060;
+            padding-left: 15px; 
+            padding-bottom: 6px;
+            border-bottom: 1px solid #118060;
+            font-size: 15px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .answer {
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            padding: 5px 15px;
+            margin-left: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            line-height: 35px;
+        }
     }
 }
