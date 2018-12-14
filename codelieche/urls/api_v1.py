@@ -8,5 +8,5 @@ urlpatterns = [
     # 文章模块api
     path('article/', include(arg=("article.urls.api.main", "article"), namespace="article")),
     # 问卷模块
-    path('question/', include(arg=("question.urls.api.main", "question"), namespace="question")),
+    path('wenjuan/', include(arg=("wenjuan.urls.api.main", "wenjuan"), namespace="wenjuan")),
 ]

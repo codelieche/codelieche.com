@@ -10,5 +10,5 @@ urlpatterns = [
     path('article/', include(arg=("article.urls.pages.article", "article"), namespace="article")),
     path('category/', include(arg=("article.urls.pages.category", "article"), namespace="category")),
     # 问卷调查相关的页面
-    path('question/', include(arg=("question.urls.pages.question", "question"), namespace="question")),
+    path('wenjuan/', include(arg=("wenjuan.urls.pages.wenjuan", "wenjuan"), namespace="wenjuan")),
 ]
