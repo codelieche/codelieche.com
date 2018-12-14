@@ -1,5 +1,42 @@
 @charset "UTF-8";
 
+.container.question {
+    background-color: #E6E6E6;
+    
+}
+
+.question {
+    .ant-layout-header{
+        .title {
+            color: #F9F9F9;
+            font-size: 20px;
+            font-weight: 400;
+        }
+    }
+    .description {
+        padding: 15px 20px;
+        border-left: 4px solid #bfbfbf;
+        line-height: 24px;
+        color: #444;
+        background-color: #fff;
+        // border-bottom: 1px solid #bfbfbf;
+        box-shadow: 0 4px 38px -4px rgba(0, 0, 0, 0.2);
+        margin-bottom: 10px;
+    }
+}
+
+
+.container.question {
+    .ant-form-item {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #f0f2f5;
+        box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
+    }
+}
+
 .question-job, .question-report {
     padding: 10px;
     .header {
@@ -8,14 +45,6 @@
         h2 {
             margin-bottom: 0;
         }
-    }
-    .description {
-        padding: 10px 20px;
-        // padding-left: 20px;
-        border-left: 4px solid #118060;
-        color: #555;
-        margin-left: 35px;
-        background-color: #e6e6e6;
     }
 
     .forms , .answers{
@@ -47,7 +76,7 @@
             border: 1px solid #f0f2f5;
             border-top: 1px solid #d4d6d8;
             box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 8px 8px;
+            // border-radius: 0 0 8px 8px;
         }
 
         .button {
@@ -56,65 +85,18 @@
     }
 }
 
-// 主体内容中的信息展示属性样式
-.container .info-property {
-    // 详情页 属性信息样式
-    margin: 0 auto 20px;
-    padding: 10px 20px 5px 20px;
-    // padding-right: 10px;
-    // border: 1px solid #e6e6e6;
-  
-    border: 1px solid #d4d6d8;
-    box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-right: 10px;
-    dl:last-child {
-      border-bottom: none;
-    }
-    dl {
-      font-size: 14px;
-      line-height: 32px;
-      // border-bottom: 2px dotted #cecece;
-      border-bottom: 1px dashed #e6e6e6;
-      // color: #333;
-      display: flex;
-      padding: 0;
-      margin: 0;
-      dd {
-        margin-bottom: 0;
-      }
-      dt,
-      dd {
-        // 有时候信息太长，要设置下自动换行
-        display: inline-block;
-        word-wrap: break-word;
-        word-break: break-all;
-        img {
-          width: 400px;
-          height: 250px;
-        }
-      }
-      dt {
-        width: 140px;
-        // font-size: 15px;
-        color: #666;
-        vertical-align: top;
-      }
-      dd {
-        flex: 1;
-        list-style: none;
-      }
-    }
-}
 
 
 .container .answers {
     .answer-item{
-        margin: 10px 0;
-        padding: 5px 10px;
-        // border-bottom: 1px solid #dfdfdf;
+        background-color: #fff;
+        margin: 10px 0 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #f0f2f5;
+        box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
         .title {
-            border-left: 4px solid #118060;
+            border-left: 2px solid #118060;
             padding-left: 15px; 
             padding-bottom: 6px;
             border-bottom: 1px solid #118060;
@@ -125,18 +107,17 @@
 
         .answer {
             margin-top: 10px;
-            background-color: #f9f9f9;
+            // background-color: #f9f9f9;
             padding: 5px 15px;
             margin-left: 5px;
-            // border: 1px solid #ddd;
-            // border-radius: 5px;
+            border-radius: 0 5px 5px 0;
             line-height: 35px;
 
             border: 1px solid #f0f2f5;
-            border-top: 1px solid #d4d6d8;
+            // border-top: 1px solid #d4d6d8;
             box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 8px 0;
-            border-left: 4px solid #dfdfdf;
+            // border-radius: 0 0 8px 0;
+            border-left: 2px solid #dfdfdf;
         }
     }
 }

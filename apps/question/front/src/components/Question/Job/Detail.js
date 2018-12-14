@@ -73,18 +73,24 @@ class JobDetail extends Component {
     render() {
         // console.log(this.state.detail);
         return (
-            <Layout>
+            <Layout className="question">
                 <Header>
-                    <h1 style={{color: "#F9F9F9"}}>问卷调查 <Icon type="edit" /></h1>
+                    <div className="title float-l">
+                        问卷调查 <Icon type="edit" />
+                    </div>
+                    <div className="title float-r">
+                        {this.state.detail.title}
+                    </div>
                 </Header>
+                <div className="description">
+                    { this.state.detail.description ? this.state.detail.description : this.state.detail.title }
+                </div>
                 <Content>
-                    <div className="container question-job">
-                        <div className="header">
+                    <div className="container question question-job">
+                        {/* <div className="header">
                             <h2>{this.state.detail.title}</h2>
-                        </div>
-                        <div className="description">
-                            {this.state.detail.description}
-                        </div>
+                        </div> */}
+                        
                         <div className="forms">
                             <JobQuestionsForm 
                             questions={this.state.detail.questions} 
@@ -93,7 +99,7 @@ class JobDetail extends Component {
                     </div>
                 </Content>
                 <Footer>
-                    
+                    <span>感谢您的参与！</span>
                 </Footer>
                 
             </Layout>

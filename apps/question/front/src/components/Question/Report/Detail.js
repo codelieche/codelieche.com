@@ -60,19 +60,18 @@ class ReportDetail extends Component {
 
     render() {
         return (
-            <Layout>
+            <Layout className="question">
                 <Header>
-                    <h1 style={{color: "#F9F9F9"}}>答卷</h1>
+                    <div className="title float-l">答卷</div>
+                    <div className="title float-r">
+                        {this.state.jobDetail.title}
+                    </div>
                 </Header>
+                <div className="description">
+                    { this.state.jobDetail.description ? this.state.jobDetail.description : this.state.jobDetail.title }
+                </div>
                 <Content>
-                    <div className="container question-report">
-                        <div className="header">
-                             <h2>{this.state.jobDetail.title}</h2>
-                        </div>
-                        <div className="description">
-                            {this.state.jobDetail.description}
-                        </div>
-
+                    <div className="container question question-report">
                         <div className="answers">
                             <Row className="title">
                                 <h4>回答信息</h4>
@@ -99,7 +98,9 @@ class ReportDetail extends Component {
                         </div>
                     </div>
                 </Content>
-                <Footer></Footer>
+                <Footer>
+                    <span>感谢您的参与！</span>
+                </Footer>
             </Layout>
         );
     }
