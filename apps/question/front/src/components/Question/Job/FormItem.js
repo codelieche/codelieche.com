@@ -10,16 +10,18 @@ class JobFormItem extends React.Component {
         super(props);
         this.state = {
             data: this.props.data ? this.props.data : {},
+            index: this.props.index,
         }
     }
 
     static getDerivedStateFromProps(nexProps, prevState) {
         // 当父组件传递的属性改变的时候，要改变下自身的状态
         if (
-            nexProps.data !== prevState.data
+            nexProps.data !== prevState.data || nexProps.index !== prevState.index
         ) {
             return {
                 data: nexProps.data,
+                index: nexProps.index
             };
         } else {
             return null;
@@ -27,7 +29,7 @@ class JobFormItem extends React.Component {
     }
 
     render() {
-
+        // console.log(this.state.index);
         const getFieldDecorator = this.props.getFieldDecorator;
         if( this.state.data.category === "radio" ){
             // 处理Option
@@ -35,7 +37,7 @@ class JobFormItem extends React.Component {
                 return <Radio value={item.option} key={index}>{item.value}</Radio>
             });
             return (
-                <Form.Item label={this.state.data.title}
+                <Form.Item label={`${this.state.index}. ${this.state.data.title}`}
                 help={this.state.data.description}>
                   {getFieldDecorator(`question_${this.state.data.id}`, {
                     rules: [{ required: true, message: this.state.data.title }]
@@ -57,7 +59,7 @@ class JobFormItem extends React.Component {
                 );
             });
             return (
-                <Form.Item label={this.state.data.title}
+                <Form.Item label={`${this.state.index}. ${this.state.data.title}`}
                 help={this.state.data.description}>
                   {getFieldDecorator(`question_${this.state.data.id}`, {
                     rules: [{ required: true, message: this.state.data.title }]
@@ -72,7 +74,7 @@ class JobFormItem extends React.Component {
             // 采用Input
             return (
                 <Form.Item 
-                    label={this.state.data.title}
+                    label={`${this.state.index}. ${this.state.data.title}`}
                     help={this.state.data.description}
                 >
                     {getFieldDecorator(`question_${this.state.data.id}`, {

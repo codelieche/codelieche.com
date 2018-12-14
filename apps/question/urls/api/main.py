@@ -8,9 +8,9 @@ urlpatterns = [
     path("list", QuestionListApiView.as_view(), name="list"),
     path("<int:pk>", QuestionDetailApiView.as_view(), name="detail"),
     # 问卷相关api
-    path("job/", include(arg=("question.urls.job", "question"), namespace="job")),
+    path("job/", include(arg=("question.urls.api.job", "question"), namespace="job")),
     # 问题相关api
-    path("question/", include(arg=("question.urls.question", "question"), namespace="question")),
+    path("question/", include(arg=("question.urls.api.question", "question"), namespace="question")),
     # 问卷回答
-    path("report/", include(arg=("question.urls.report", "question"), namespace="report")),
+    path("report/", include(arg=("question.urls.api.report", "question"), namespace="report")),
 ]

@@ -30,7 +30,7 @@ class ReportAnswer extends React.Component {
                 return (
                     <div className="answer-item" key={index}>
                         <div className="title">
-                            {item.question}
+                            {index + 1}. {item.question}
                         </div>
                        <div className="answer">
                            {item.answer}

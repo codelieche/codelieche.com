@@ -38,7 +38,8 @@ class JobQuestionsBaseForm extends React.Component {
         // 根据问题获取表单
         if(this.state.questions && this.state.questions.length > 0){
             let jobFormsItems = this.state.questions.map((item, index) => {
-                return <JobFormItem key={index} data={item} getFieldDecorator={getFieldDecorator} />;
+                return <JobFormItem key={index} index={index + 1}
+                data={item} getFieldDecorator={getFieldDecorator} />;
             });
             return jobFormsItems;
         }else{
@@ -70,14 +71,14 @@ class JobQuestionsBaseForm extends React.Component {
             <Form onSubmit={this.handleSubmit}>
                 {this.getFormItems(getFieldDecorator)}
 
-                <Row className="center">
-                    <Form.Item>
+                <Row className="center button">
+                    {/* <Form.Item> */}
                         <Button 
                         type="primary"
                         htmlType="submit"
                         disabled={hasErrors(getFieldsError())}
-                        >添加</Button>
-                    </Form.Item>
+                        >提交问卷</Button>
+                    {/* </Form.Item> */}
                 </Row>
             </Form>
         )
