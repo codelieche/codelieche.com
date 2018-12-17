@@ -1,0 +1,52 @@
+
+// 主体内容中的信息展示属性样式
+.container .info-property {
+    // 详情页 属性信息样式
+    background-color: #fff;
+    margin: 0 auto 20px;
+    padding: 10px 20px 5px 20px;
+    // padding-right: 10px;
+    // border: 1px solid #e6e6e6;
+  
+    border: 1px solid #d4d6d8;
+    box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-right: 10px;
+    dl:last-child {
+      border-bottom: none;
+    }
+    dl {
+      font-size: 14px;
+      line-height: 32px;
+      // border-bottom: 2px dotted #cecece;
+      border-bottom: 1px dashed #e6e6e6;
+      // color: #333;
+      display: flex;
+      padding: 0;
+      margin: 0;
+      dd {
+        margin-bottom: 0;
+      }
+      dt,
+      dd {
+        // 有时候信息太长，要设置下自动换行
+        display: inline-block;
+        word-wrap: break-word;
+        word-break: break-all;
+        img {
+          width: 400px;
+          height: 250px;
+        }
+      }
+      dt {
+        width: 140px;
+        // font-size: 15px;
+        color: #666;
+        vertical-align: top;
+      }
+      dd {
+        flex: 1;
+        list-style: none;
+      }
+    }
+}

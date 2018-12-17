@@ -8,5 +8,7 @@ urlpatterns = [
     re_path(r'^page/(?P<page>\d+)/?$', IndexPageView.as_view(), name="page"),
     # path('page/<int:page>', IndexPageView.as_view(), name="page"),
     path('article/', include(arg=("article.urls.pages.article", "article"), namespace="article")),
-    path('category/', include(arg=("article.urls.pages.category", "article"), namespace="category"))
+    path('category/', include(arg=("article.urls.pages.category", "article"), namespace="category")),
+    # 问卷调查相关的页面
+    path('wenjuan/', include(arg=("wenjuan.urls.pages.wenjuan", "wenjuan"), namespace="wenjuan")),
 ]
