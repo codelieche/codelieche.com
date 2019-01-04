@@ -161,7 +161,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 # 不需要加入中间的models
 AUTH_USER_MODEL = 'account.UserProfile'
 # 默认的登录地址: 当使用了login_required装饰器未传入login_url参数，默认会再settings中找LOGIN_URL
-LOGIN_URL = '/account/login/'
+LOGIN_URL = '/account/login'
 
 # 使用自定义的后台auth认证方法
 AUTHENTICATION_BACKENDS = (
