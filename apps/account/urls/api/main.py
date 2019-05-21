@@ -17,4 +17,7 @@ urlpatterns = [
     # 权限
     path('permission/', include(arg=('account.urls.api.permission', 'account'),
                                 namespace='permission')),
+    # Note
+    path('note/', include(arg=('account.urls.api.note', 'account'), namespace='note')),
+
 ]
