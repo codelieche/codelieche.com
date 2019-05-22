@@ -78,7 +78,8 @@ class WeiboModelSerializer(serializers.ModelSerializer):
     )
 
     images = ImageInfoModelSerializer(required=False, many=True, read_only=True)
-    comments = CommentModelSerializer(required=False, many=True, read_only=True, source="comment_set")
+    comments = CommentModelSerializer(required=False, many=True, read_only=True,
+                                      source="comment_set")
 
     def create(self, validated_data):
         request = self.context["request"]
@@ -118,10 +119,35 @@ class WeiboModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Weibo
-        fields = ("id", "user", "content", "images", "video", "link",
+        fields = ("id", "user", "content", "images", "video", "link", "address",
                   # "is_public", "time_added", "is_deleted",
                   "is_public", "time_added", "is_deleted", "files", "comments"
                   )
 
+
+class WeiboSimpleModelSerializer(serializers.ModelSerializer):
+    """
+    Weibo Simple Model Serializer
+    """
+    user = serializers.SlugRelatedField(slug_field="username", required=False, read_only=True)
+    images = ImageInfoModelSerializer(required=False, many=True, read_only=True)
+
+    class Meta:
+        model = Weibo
+        fields = ("id", "user", "content", "images", "video", "link",
+                  "is_public", "time_added", "is_deleted")
+
+
+class CommentDetailModelSerializer(serializers.ModelSerializer):
+    """
+    Comment Detail Model Serializer
+    """
+
+    user = serializers.SlugRelatedField(slug_field="username", required=False, read_only=True)
+    weibo = WeiboSimpleModelSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ("id", "weibo", "user", "content", "address", "time_added")
 
 
