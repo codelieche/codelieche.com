@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 
 from account.serializers.note import NoteModelSerializer
@@ -13,6 +14,7 @@ class NoteCreateApiView(generics.CreateAPIView):
     """
     serializer_class = NoteModelSerializer
     queryset = Note.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 
 class NoteListApiView(generics.ListAPIView):
@@ -21,6 +23,7 @@ class NoteListApiView(generics.ListAPIView):
     """
     serializer_class = NoteModelSerializer
     queryset = Note.objects.all()
+    permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
     search_fields = ("user__username", "content")
     ordering_fields = ("id", "time_added", "user")
@@ -34,11 +37,11 @@ class NoteListAllApiView(generics.ListAPIView):
     serializer_class = NoteModelSerializer
     queryset = Note.objects.filter(is_deleted=False)
     pagination_class = None
+    permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
     search_fields = ("user__username", "content")
     ordering_fields = ("id", "time_added", "user")
     ordering = ("-id",)
-
 
 
 class NoteDetailApiView(generics.RetrieveAPIView):
@@ -47,5 +50,5 @@ class NoteDetailApiView(generics.RetrieveAPIView):
     """
     queryset = Note.objects.filter(is_deleted=False)
     serializer_class = NoteModelSerializer
-
+    permission_classes = (IsAuthenticated,)
 
