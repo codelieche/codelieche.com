@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
 from django.urls import path, include
+from rest_framework.authtoken.views import obtain_auth_token
 
 from account.views.user import LoginView, account_logout
 
 urlpatterns = [
     # 前缀：/api/v1/account/
+    path('api-auth-token', obtain_auth_token),
     path('login', LoginView.as_view(), name="login"),
     path('logout', account_logout, name="logout"),
 

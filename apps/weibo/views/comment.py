@@ -3,6 +3,7 @@
 Weibo 评论相关
 """
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http.response import HttpResponse
@@ -26,6 +27,7 @@ class CommentListApiView(generics.ListAPIView):
     queryset = Comment.objects.filter(is_deleted=False)
     serializer_class = CommentModelSerializer
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
+    permission_classes = (IsAuthenticated,)
     filter_fields = ("weibo", "user")
     search_fields = ("content", "weibo__content")
     ordering = ("-id", "weibo", "user")
@@ -37,6 +39,7 @@ class CommentDetailAPIView(generics.RetrieveDestroyAPIView):
     """
     queryset = Comment.objects.all()
     serializer_class = CommentDetailModelSerializer
+    permission_classes = (IsAuthenticated,)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

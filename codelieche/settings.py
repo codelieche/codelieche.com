@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 第三方app
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'corsheaders',
     # 自己写的app
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'article',
     'wenjuan',
     "weibo",
-    'modellog'
+    'modellog',
 ]
 
 MIDDLEWARE = [
