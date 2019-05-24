@@ -74,7 +74,8 @@ class WeiboModelSerializer(serializers.ModelSerializer):
         child=serializers.ImageField(
             allow_empty_file=False, use_url=False, max_length=1024000),
         allow_null=True,
-        allow_empty=True
+        allow_empty=True,
+        required=False
     )
 
     images = ImageInfoModelSerializer(required=False, many=True, read_only=True)
@@ -99,7 +100,9 @@ class WeiboModelSerializer(serializers.ModelSerializer):
         validated_data["address"] = ip
 
         # 根据传递的files获取到images
-        files = validated_data.pop("files")
+        files = []
+        if "files" in validated_data:
+            files = validated_data.pop("files")
 
         # print(files)
         # for file_i in request.FILES["files"]:

@@ -22,7 +22,7 @@ class NoteListApiView(generics.ListAPIView):
     Note List Api View
     """
     serializer_class = NoteModelSerializer
-    queryset = Note.objects.all()
+    queryset = Note.objects.filter(is_deleted=False)
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
     search_fields = ("user__username", "content")
