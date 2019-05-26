@@ -7,7 +7,7 @@ from io import BytesIO
 
 from django.db import models
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from PIL import Image as PImage
+from PIL import Image as PImage, ExifTags
 
 from account.models import User
 from utils.store import ImageStorage
@@ -43,10 +43,25 @@ class Image(models.Model):
         if image_file.file.content_type != "image/jpeg" and image_file.size < 600 * 1024:
             return image_file
 
-        if image_file.file.content_type != "image/gif":
-            return
+        if image_file.file.content_type == "image/gif":
+            return image_file
 
         image_tmp = PImage.open(image_file)
+
+        # 方向处理
+        exif = dict(image_tmp._getexif().items())
+
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == "Orientation":
+                break
+
+        if exif[orientation] == 3:
+            image_tmp = image_tmp.rotate(180, expand=True)
+        elif exif[orientation] == 6:
+            image_tmp = image_tmp.rotate(270, expand=True)
+        elif exif[orientation] == 8:
+            image_tmp = image_tmp.rotate(90, expand=True)
+
         output_io_stream = BytesIO()
         w, h = image_tmp.size
 
