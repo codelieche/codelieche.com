@@ -2,7 +2,12 @@
 """
 微博相关的 Model
 """
+import sys
+from io import BytesIO
+
 from django.db import models
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image as PImage
 
 from account.models import User
 from utils.store import ImageStorage
@@ -23,6 +28,43 @@ class Image(models.Model):
 
     time_added = models.DateTimeField(verbose_name="添加时间", blank=True, auto_now_add=True)
     is_deleted = models.BooleanField(verbose_name="删除", blank=True, default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.id and self.file:
+            self.file = self.resize_image(self.file)
+        super().save(*args, **kwargs)
+
+    def resize_image(self, image_file):
+        """
+        对图片大小进行缩放
+        :param image_file: 图片对象
+        :return:
+        """
+        if image_file.file.content_type != "image/jpeg" and image_file.size < 600 * 1024:
+            return image_file
+
+        if image_file.file.content_type != "image/gif":
+            return
+
+        image_tmp = PImage.open(image_file)
+        output_io_stream = BytesIO()
+        w, h = image_tmp.size
+
+        scale = 1
+        if w > 1600:
+            scale = 1600.0 / w
+        image_resize = image_tmp.resize((int(w * scale), int(h * scale)))
+        image_resize.save(output_io_stream, format='JPEG', quality=80)
+        output_io_stream.seek(0)
+        image = InMemoryUploadedFile(
+            output_io_stream,
+            'ImageField',
+            "%s.jpg" % image_file.name.split('.')[0],
+            'image/jpeg',
+            sys.getsizeof(output_io_stream),
+            None
+        )
+        return image
 
     class Meta:
         verbose_name = "微博图片"
