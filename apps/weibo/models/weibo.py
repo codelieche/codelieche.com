@@ -49,18 +49,22 @@ class Image(models.Model):
         image_tmp = PImage.open(image_file)
 
         # 方向处理
-        exif = dict(image_tmp._getexif().items())
+        try:
+            if image_tmp._getexif():
+                exif = dict(image_tmp._getexif().items())
 
-        for orientation in ExifTags.TAGS.keys():
-            if ExifTags.TAGS[orientation] == "Orientation":
-                break
+                for orientation in ExifTags.TAGS.keys():
+                    if ExifTags.TAGS[orientation] == "Orientation":
+                        break
 
-        if exif[orientation] == 3:
-            image_tmp = image_tmp.rotate(180, expand=True)
-        elif exif[orientation] == 6:
-            image_tmp = image_tmp.rotate(270, expand=True)
-        elif exif[orientation] == 8:
-            image_tmp = image_tmp.rotate(90, expand=True)
+                if exif[orientation] == 3:
+                    image_tmp = image_tmp.rotate(180, expand=True)
+                elif exif[orientation] == 6:
+                    image_tmp = image_tmp.rotate(270, expand=True)
+                elif exif[orientation] == 8:
+                    image_tmp = image_tmp.rotate(90, expand=True)
+        except Exception as e:
+            print(e)
 
         output_io_stream = BytesIO()
         w, h = image_tmp.size
@@ -91,7 +95,7 @@ class Weibo(models.Model):
     微博博文
     """
     user = models.ForeignKey(to=User, verbose_name="用户", on_delete=models.CASCADE)
-    content = models.CharField(verbose_name="博文内容", max_length=512)
+    content = models.CharField(verbose_name="博文内容", max_length=512, blank=True, null=True)
     # 发微博，有图文、视频、链接分享
     images = models.ManyToManyField(to=Image, blank=True, verbose_name="关联的图片")
     video = models.URLField(verbose_name="视频地址", blank=True, null=True, max_length=200)
