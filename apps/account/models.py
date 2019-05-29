@@ -105,3 +105,18 @@ class Message(models.Model):
     class Meta:
         verbose_name = "用户消息"
         verbose_name_plural = verbose_name
+
+
+class Note(models.Model):
+    """
+    留言
+    """
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name="用户", blank=True, null=True)
+    content = models.CharField(verbose_name="留言内容", max_length=512)
+    address = models.GenericIPAddressField(verbose_name="IP地址", blank=True, null=True)
+    time_added = models.DateTimeField(verbose_name="添加时间", auto_now_add=True, blank=True)
+    is_deleted = models.BooleanField(verbose_name="删除", blank=True, default=False)
+
+    class Meta:
+        verbose_name = "留言"
+        verbose_name_plural = verbose_name

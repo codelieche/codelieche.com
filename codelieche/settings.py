@@ -43,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 第三方app
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'corsheaders',
     # 自己写的app
     'account',
     'article',
     'wenjuan',
-    'modellog'
+    "weibo",
+    'modellog',
 ]
 
 MIDDLEWARE = [
@@ -98,7 +100,10 @@ DATABASES = {
         'USER': os.environ.get('MYSQL_USER', 'root'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
         'HOST': os.environ.get('MYSQL_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('MYSQL_PORT', 3306)
+        'PORT': os.environ.get('MYSQL_PORT', 3306),
+        'OPTIONS': {
+            "charset": "utf8mb4"
+        }
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -161,7 +166,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 # 不需要加入中间的models
 AUTH_USER_MODEL = 'account.UserProfile'
 # 默认的登录地址: 当使用了login_required装饰器未传入login_url参数，默认会再settings中找LOGIN_URL
-LOGIN_URL = '/account/login/'
+LOGIN_URL = '/account/login'
 
 # 使用自定义的后台auth认证方法
 AUTHENTICATION_BACKENDS = (

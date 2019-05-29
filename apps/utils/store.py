@@ -6,6 +6,7 @@ import os
 import time
 import random
 
+from PIL import Image
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
@@ -38,6 +39,9 @@ class ImageStorage(FileSystemStorage):
         filename = '{}_{}'.format(filename, random.randint(0, 100))
         # 重写合成文件的名字,注意别漏了ext
         name_new = os.path.join(d, filename + ext)
+        # print(self.file_permissions_mode)
+        # 设置保存的图片的权限
+        self.file_permissions_mode = 0o644
         # 调用父类的方法
         return super(ImageStorage, self)._save(name=name_new, content=content)
 
