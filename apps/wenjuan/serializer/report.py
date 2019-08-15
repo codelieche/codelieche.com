@@ -50,7 +50,7 @@ class ReportModelSerializer(serializers.ModelSerializer):
             elif category == "checkbox":
                 # 如果是checkbox就需要对多个选项都进行检查
                 # 检查字段的值是否为空
-                option_field = field_value.join(",")
+                option_field = ",".join(field_value)
                 answer_field_list = []
                 for v in field_value:
                     choice = question.choices.filter(option=v).first()
@@ -61,7 +61,7 @@ class ReportModelSerializer(serializers.ModelSerializer):
                         answer_field_list.append(choice.value)
 
                 # 选项
-                answer_field = answer_field_list.join(",")
+                answer_field = ",".join(answer_field_list)
                 # 添加answer
                 answer = Answer(question=question, option=option_field, answer=answer_field)
                 answers_list.append(answer)
