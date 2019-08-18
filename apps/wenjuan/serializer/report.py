@@ -111,11 +111,24 @@ class ReportModelSerializer(serializers.ModelSerializer):
         fields = ("id", "job", "user", "ip", "time_added", "answers")
 
 
+class ReportListSerializer(serializers.ModelSerializer):
+    """
+    答卷列表
+    """
+    # job = JobModelSerializer(read_only=True)
+    user = serializers.SlugRelatedField(slug_field="username", read_only=True)
+
+    class Meta:
+        model = Report
+        fields = ("id", "job", "user", "ip", "time_added")
+
+
 class ReportDetailSerializer(serializers.ModelSerializer):
     """
     问卷回答详情api
     """
     # job = JobModelSerializer(read_only=True)
+    user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     answers = AnswerDetailSerializer(many=True, read_only=True)
 
     class Meta:

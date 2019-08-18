@@ -19,12 +19,15 @@ class Job(models.Model):
     is_active = models.BooleanField(verbose_name="启用", blank=True, default=True)
     # 有些问卷是需要用户登录才可以回答的
     is_authenticated = models.BooleanField(verbose_name="需要用户登录", blank=True, default=True)
+    # 添加个帮助链接
+    help_title = models.CharField(verbose_name="帮助标题", max_length=128, blank=True, null=True)
+    help_url = models.URLField(verbose_name="帮助链接", blank=True, null=True)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = "问卷"
+        verbose_name = "问卷:Job"
         verbose_name_plural = verbose_name
 
 
@@ -44,13 +47,16 @@ class Question(models.Model):
                                 default="text", blank=True)
     # 回答的唯一性，通过在提交的时候做检验
     is_unique = models.BooleanField(verbose_name="回答需要唯一", blank=True, default=False)
+    # 每一份问卷的问题，需要个先后顺序，如果不加会按照ID排序
+    order = models.IntegerField(verbose_name="排序", blank=True, default=1)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = "问题"
+        verbose_name = "问题:Question"
         verbose_name_plural = verbose_name
+        ordering = ("order", "id")
 
 
 class Choice(models.Model):
@@ -60,13 +66,15 @@ class Choice(models.Model):
     question = models.ForeignKey(to="question", verbose_name="问题", related_name="choices", on_delete=models.CASCADE)
     option = models.CharField(verbose_name="选项", max_length=1)
     value = models.CharField(verbose_name="选项值", max_length=128)
+    order = models.IntegerField(verbose_name="排序", blank=True, default=1)
 
     def __str__(self):
         return "{}:{}".format(self.question, self.value)
 
     class Meta:
-        verbose_name = "问题答案选项"
+        verbose_name = "问题答案选项:Question Choices"
         verbose_name_plural = verbose_name
+        ordering = ("order", "id")
 
 
 class Answer(models.Model):
@@ -81,7 +89,7 @@ class Answer(models.Model):
         return "问题：(ID:{}):Answer:{}".format(self.question_id, self.answer)
 
     class Meta:
-        verbose_name = "问题回答"
+        verbose_name = "问题回答:Report Question Answer"
         verbose_name_plural = verbose_name
 
 
@@ -94,10 +102,19 @@ class Report(models.Model):
     ip = models.GenericIPAddressField(verbose_name="回答者IP", blank=True, null=True)
     time_added = models.DateTimeField(verbose_name="添加时间", blank=True, auto_now_add=True)
     answers = models.ManyToManyField(verbose_name="问卷回答", to="answer", blank=True)
+    # 是否删除
+    is_deleted = models.BooleanField(verbose_name="删除", blank=True, default=False)
 
     def __str__(self):
         return "Report:{}".format(self.pk)
 
+    def __delete__(self, instance):
+        if not self.is_deleted:
+            self.is_deleted = True
+            self.save()
+        else:
+            return True
+
     class Meta:
-        verbose_name = "问卷回答"
+        verbose_name = "问卷回答:Report"
         verbose_name_plural = verbose_name
