@@ -37,7 +37,7 @@ class JobModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = ("id", "name", "title", "description",
-                  "is_active", "is_authenticated", "questions",
+                  "is_active", "is_authenticated", "questions", "help_title", "help_url",
                   "time_start", "time_expired", "time_added")
 
 
