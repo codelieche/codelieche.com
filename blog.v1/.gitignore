@@ -1,0 +1,20 @@
+.DS_modules
+.DS_Store
+
+*.pyc
+.idea
+.vscode
+.python-version
+__pycache__
+db.sqlite3
+
+tmp/
+*.css.map
+yarn.lock
+static/libs/
+
+# 忽略migrations文件
+**/migrations/*.py
+!**/migrations/__init__.py
+
+
